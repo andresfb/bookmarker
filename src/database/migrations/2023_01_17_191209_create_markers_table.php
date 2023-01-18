@@ -11,9 +11,10 @@ return new class extends Migration {
             $table->uuid('id')->primary();
             $table->foreignUuid('user_id')->constrained();
             $table->text('url');
+            $table->string('domain')->nullable();
             $table->string('title')->nullable();
             $table->string('slug')->nullable()->index();
-            $table->text('notes');
+            $table->text('notes')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

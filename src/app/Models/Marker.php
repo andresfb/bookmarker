@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Observers\MarkerObserver;
+use App\Traits\Domainable;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -9,7 +11,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Marker extends Model
 {
-    use SoftDeletes, Sluggable;
+    use SoftDeletes, Sluggable, Domainable;
 
     /** @var string[] */
     protected $guarded = ['id'];
@@ -24,6 +26,10 @@ class Marker extends Model
         'deleted_at',
         'created_at',
         'updated_at'
+    ];
+
+    protected array $observers = [
+        Marker::class => [MarkerObserver::class],
     ];
 
 

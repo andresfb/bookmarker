@@ -13,8 +13,12 @@ module.exports = {
         extend: {},
     },
 
+    daisyui: {
+      themes: ["cupcake"]
+    },
     plugins: [
         require("@tailwindcss/forms"),
-        require("@tailwindcss/typography")
+        require("@tailwindcss/typography"),
+        require("daisyui")
     ],
 };
