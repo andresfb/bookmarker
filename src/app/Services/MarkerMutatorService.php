@@ -29,21 +29,12 @@ class MarkerMutatorService
         }
 
         $htmlString = file_get_contents($marker->url);
-        if (empty($htmlString)) {
-            throw new RuntimeException("Can't get site data for $marker->url");
+
+        if (!preg_match('/<title>(.+)<\/title>/', $htmlString, $matches) || !isset($matches[1])) {
+            return;
         }
 
-        $htmlDom = new DOMDocument();
-        if (!$htmlDom->loadHTML($htmlString)) {
-            throw new RuntimeException("Can't load HTML for $marker->url");
-        }
-
-        $title = $htmlDom->getElementsByTagName('title');
-        if (!$title->count()) {
-            throw new RuntimeException("No Title tags found on $marker->url");
-        }
-
-        $marker->title = ucwords(strtolower(trim($title->item(0)->nodeValue)));
+        $marker->title = ucwords(strtolower(trim($matches[1])));
         $marker->save();
     }
 }

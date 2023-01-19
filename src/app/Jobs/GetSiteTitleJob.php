@@ -16,9 +16,11 @@ class GetSiteTitleJob implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    public function __construct(private readonly Marker               $marker,
-                                private readonly MarkerMutatorService $service)
+    private MarkerMutatorService $service;
+
+    public function __construct(private readonly Marker $marker,)
     {
+        $this->service = resolve(MarkerMutatorService::class);
     }
 
     /**

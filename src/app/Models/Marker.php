@@ -2,24 +2,24 @@
 
 namespace App\Models;
 
+use App\Enums\MarkerStatus;
 use App\Observers\MarkerObserver;
 use App\Traits\Domainable;
 use Cviebrock\EloquentSluggable\Sluggable;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Spatie\Tags\HasTags;
 
 class Marker extends Model
 {
+    use HasTags;
     use SoftDeletes, Sluggable, Domainable;
 
     /** @var string[] */
-    protected $guarded = ['id'];
-
-    /** @var string[] */
-    protected $dispatchesEvents = [
-        'created' => '',
-    ];
+    protected $guarded = [];
 
     /** @var string[] */
     protected $dates = [
@@ -28,8 +28,10 @@ class Marker extends Model
         'updated_at'
     ];
 
-    protected array $observers = [
-        Marker::class => [MarkerObserver::class],
+    /** @var string[] */
+    protected $casts = [
+        'status' => MarkerStatus::class,
+        'priority' => 'integer',
     ];
 
 
@@ -53,5 +55,33 @@ class Marker extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    /**
+     * scopeActive Method.
+     *
+     * @param Builder $query
+     * @return Builder
+     */
+    public function scopeActive(Builder $query): Builder
+    {
+        return $query->where('status', MarkerStatus::ACTIVE->value)
+            ->orderBy('priority');
+    }
+
+    /**
+     * scopeHidden Method.
+     *
+     * @param Builder $query
+     * @return Builder
+     */
+    public function scopeHidden(Builder $query): Builder
+    {
+        if (!cache()->has(config('constants.marker_hidden_key'))) {
+            return $query;
+        }
+
+        return $query->where('status', MarkerStatus::HIDDEN->value)
+            ->orderBy('priority');
     }
 }
