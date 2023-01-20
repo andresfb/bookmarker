@@ -19,7 +19,7 @@ class CacheRefreshService
     }
 
     /**
-     * @param bool $refresh
+     * @param  bool  $refresh
      */
     public function setRefresh(bool $refresh): void
     {

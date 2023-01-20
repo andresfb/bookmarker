@@ -4,8 +4,6 @@ namespace App\Services;
 
 use App\Models\Marker;
 use App\Traits\Domainable;
-use DOMDocument;
-use RuntimeException;
 
 class MarkerMutatorService
 {
@@ -19,7 +17,7 @@ class MarkerMutatorService
     /**
      * getTitle Method.
      *
-     * @param Marker $marker
+     * @param  Marker  $marker
      * @return void
      */
     public function getTitle(Marker $marker): void
@@ -30,7 +28,7 @@ class MarkerMutatorService
 
         $htmlString = file_get_contents($marker->url);
 
-        if (!preg_match('/<title>(.+)<\/title>/', $htmlString, $matches) || !isset($matches[1])) {
+        if (! preg_match('/<title>(.+)<\/title>/', $htmlString, $matches) || ! isset($matches[1])) {
             return;
         }
 

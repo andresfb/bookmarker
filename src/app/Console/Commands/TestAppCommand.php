@@ -19,12 +19,14 @@ class TestAppCommand extends Command
 
             $this->line('');
             $this->info("Done.\n");
+
             return 0;
         } catch (\Exception $e) {
             $this->line('');
             $this->error($e->getMessage());
             $this->line('');
             Log::error($e);
+
             return 1;
         }
     }

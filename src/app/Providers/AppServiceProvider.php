@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Services\CacheRefreshService;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -12,7 +13,7 @@ class AppServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function register()
+    public function register(): void
     {
         $this->app->singleton(CacheRefreshService::class, function () {
             return new CacheRefreshService();
@@ -24,8 +25,8 @@ class AppServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function boot()
+    public function boot(): void
     {
-        //
+        Model::preventLazyLoading(! app()->isProduction());
     }
 }

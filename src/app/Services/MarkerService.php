@@ -14,14 +14,14 @@ class MarkerService
     /**
      * getActiveList Method.
      *
-     * @param int $userId
+     * @param  int  $userId
      * @return Collection
      */
     public function getActiveList(int $userId): Collection
     {
         $key = md5(sprintf(config('constants.makers_active_list'), $userId));
         $markers = Cache::get($key);
-        if (!empty($markers) && !$this->refreshCache()) {
+        if (! empty($markers) && ! $this->refreshCache()) {
             return $markers;
         }
 
@@ -30,11 +30,12 @@ class MarkerService
             ->with('tags')
             ->get();
 
-        if (!$markers->count()) {
+        if (! $markers->count()) {
             return $markers;
         }
 
         Cache::put($key, $markers, now()->addHour());
+
         return $markers;
     }
 }

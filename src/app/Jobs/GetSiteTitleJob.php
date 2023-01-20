@@ -18,7 +18,12 @@ class GetSiteTitleJob implements ShouldQueue
 
     private MarkerMutatorService $service;
 
-    public function __construct(private readonly Marker $marker,)
+    /**
+     * Constructor
+     *
+     * @param  Marker  $marker
+     */
+    public function __construct(private readonly Marker $marker)
     {
         $this->service = resolve(MarkerMutatorService::class);
     }
@@ -27,6 +32,7 @@ class GetSiteTitleJob implements ShouldQueue
      * handle Method.
      *
      * @return void
+     *
      * @throws Exception
      */
     public function handle(): void

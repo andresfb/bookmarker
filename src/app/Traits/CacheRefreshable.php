@@ -2,7 +2,6 @@
 
 namespace App\Traits;
 
-
 use App\Services\CacheRefreshService;
 
 trait CacheRefreshable
@@ -10,7 +9,7 @@ trait CacheRefreshable
     /**
      * setRefresh Method.
      *
-     * @param bool $value
+     * @param  bool  $value
      * @return void
      */
     public function setRefresh(bool $value): void
