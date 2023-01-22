@@ -27,7 +27,7 @@ class MarkerObserver
     public function creating(Marker $marker): void
     {
         if (empty($marker->section_id)) {
-            $marker->section_id = Section::getDefault()->id;
+            $marker->section_id = Section::getDefault()->id ?? 1;
         }
 
         $this->service->setDomain($marker);

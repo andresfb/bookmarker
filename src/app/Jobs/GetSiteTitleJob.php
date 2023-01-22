@@ -40,7 +40,7 @@ class GetSiteTitleJob implements ShouldQueue
         try {
             $this->service->getTitle($this->marker);
         } catch (Exception $e) {
-            Log::error($e);
+            Log::error($e->getMessage());
             throw $e;
         }
     }

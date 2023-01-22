@@ -25,7 +25,7 @@ class TestAppCommand extends Command
             $this->line('');
             $this->error($e->getMessage());
             $this->line('');
-            Log::error($e);
+            Log::error($e->getMessage());
 
             return 1;
         }

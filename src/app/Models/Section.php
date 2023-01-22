@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Cviebrock\EloquentSluggable\Sluggable;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Section extends BookModel
@@ -34,9 +35,9 @@ class Section extends BookModel
     /**
      * getDefault Method.
      *
-     * @return Section
+     * @return Model|null
      */
-    public static function getDefault(): Section
+    public static function getDefault(): ?Model
     {
         return self::whereIsDefault(true)->first();
     }
