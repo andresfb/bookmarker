@@ -3,8 +3,8 @@
 namespace App\Models;
 
 use Cviebrock\EloquentSluggable\Sluggable;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Section extends BookModel
 {
@@ -33,13 +33,36 @@ class Section extends BookModel
     }
 
     /**
+     * markers Method.
+     *
+     * @return HasMany
+     */
+    public function markers(): HasMany
+    {
+        return $this->hasMany(Marker::class);
+    }
+
+    /**
+     * getBaseInfo Method.
+     *
+     * @return array
+     */
+    public function getBaseInfo(): array
+    {
+        $sectionTitle = $this->title;
+        $sectionSlug = $this->slug;
+
+        return compact('sectionTitle', 'sectionSlug');
+    }
+
+    /**
      * getDefault Method.
      *
-     * @return Model|null
+     * @return Section
      */
-    public static function getDefault(): ?Model
+    public static function getDefault(): Section
     {
-        return self::whereIsDefault(true)->first();
+        return self::whereIsDefault(true)->firstOrFail();
     }
 
     /**

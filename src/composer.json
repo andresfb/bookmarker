@@ -13,9 +13,11 @@
         "laravel/sanctum": "^3.0",
         "laravel/tinker": "^2.7",
         "livewire/livewire": "^2.11",
+        "rennokki/laravel-eloquent-query-cache": "^3.3",
         "spatie/laravel-tags": "^4.3"
     },
     "require-dev": {
+        "barryvdh/laravel-debugbar": "^3.7",
         "fakerphp/faker": "^1.9.1",
         "laravel/pint": "^1.4",
         "laravel/sail": "^1.18",

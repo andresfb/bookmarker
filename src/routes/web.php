@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\DashboardController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -18,7 +19,8 @@ Route::middleware([
     config('jetstream.auth_session'),
     'cache.refresh',
 ])->group(function () {
-    Route::get('/', static function () {
-        return view('dashboard');
-    })->name('dashboard');
+    Route::controller(DashboardController::class)->group(function () {
+        Route::get('/', 'index')->name('dashboard');
+        Route::get('/{section}', 'view')->name('dashboard.view');
+    });
 });

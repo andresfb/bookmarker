@@ -20,6 +20,7 @@ class Marker extends BookModel
         'priority' => 'integer',
     ];
 
+
     /**
      * sluggable Method.
      *
@@ -43,6 +44,16 @@ class Marker extends BookModel
     }
 
     /**
+     * section Method.
+     *
+     * @return BelongsTo
+     */
+    public function section(): BelongsTo
+    {
+        return $this->belongsTo(Section::class);
+    }
+
+    /**
      * scopeActive Method.
      *
      * @param  Builder  $query
@@ -50,7 +61,7 @@ class Marker extends BookModel
      */
     public function scopeActive(Builder $query): Builder
     {
-        return $query->where('status', MarkerStatus::ACTIVE->value)
+        return $query->where('status', MarkerStatus::ACTIVE)
             ->orderBy('priority');
     }
 
@@ -66,7 +77,7 @@ class Marker extends BookModel
             return $query;
         }
 
-        return $query->where('status', MarkerStatus::HIDDEN->value)
+        return $query->where('status', MarkerStatus::HIDDEN)
             ->orderBy('priority');
     }
 }

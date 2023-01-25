@@ -2,16 +2,22 @@
 
 namespace App\View\Components;
 
-use Illuminate\View\Component;
-use Illuminate\View\View;
+use App\View\Components\Base\BookComponent;
+use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\View\Factory;
+use Illuminate\Contracts\View\View;
 
-class AppLayout extends Component
+class AppLayout extends BookComponent
 {
     /**
      * Get the view / contents that represents the component.
      */
-    public function render(): View
+    public function render(): Application|Factory|View
     {
-        return view('layouts.app');
+        return view('layouts.app')
+            ->with(
+                'sections',
+                $this->sectionsService->getSimpleList(auth()->id())
+            );
     }
 }

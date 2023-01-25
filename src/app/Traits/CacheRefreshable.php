@@ -3,6 +3,7 @@
 namespace App\Traits;
 
 use App\Services\CacheRefreshService;
+use Illuminate\Support\Carbon;
 
 trait CacheRefreshable
 {
@@ -26,6 +27,19 @@ trait CacheRefreshable
     public function refreshCache(): bool
     {
         return resolve(CacheRefreshService::class)->isRefresh();
+    }
+
+    /**
+     * serviceTtlMinutes Method.
+     *
+     * @param int $adjust
+     * @return Carbon
+     */
+    public function serviceTtlMinutes(int $adjust = 0): Carbon
+    {
+        return now()->addMinutes(
+            (int) config('constants.cache.ttl.service_minutes') + ($adjust)
+        );
     }
 
     /**

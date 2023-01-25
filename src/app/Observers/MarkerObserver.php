@@ -43,4 +43,15 @@ class MarkerObserver
     {
         GetSiteTitleJob::dispatch($marker);
     }
+
+    /**
+     * saved Method.
+     *
+     * @param Marker $marker
+     * @return void
+     */
+    public function saved(Marker $marker): void
+    {
+        // TODO add the job to clear the cache
+    }
 }
