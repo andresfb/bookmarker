@@ -14,17 +14,12 @@
                 </label>
             </span>
 
-            <!-- Logo -->
-            <div class="flex items-center gap-2 lg:hidden">
-                <x-logo />
-            </div>
-
             <!-- Search box -->
-            <div class="hidden max-w-sm lg:flex">
+            <div class="max-w-sm">
                 <div class="pt-2 relative mx-auto text-gray-600">
                     <input class="input w-full max-w-xs focus:outline-none focus:ring-primary focus:border-primary"
                            type="search" name="search" placeholder="search">
-                    <button type="submit" class="absolute right-0 top-0 mt-5 mr-4">
+                    <button type="submit" class="absolute right-0 top-0 mt-6 mr-4">
                         <svg class="text-gray-600 h-4 w-4 fill-current" xmlns="http://www.w3.org/2000/svg"
                              xmlns:xlink="http://www.w3.org/1999/xlink" id="Capa_1" x="0px" y="0px"
                              viewBox="0 0 56.966 56.966" style="enable-background:new 0 0 56.966 56.966;" xml:space="preserve"
@@ -45,7 +40,12 @@
 
             <div title="{{ Auth::user()->name }}" class="dropdown dropdown-end">
                 <div tabindex="0" class="btn btn-ghost gap-1 normal-case">
-                    {{ Auth::user()->name }}
+                    <span class="hidden md:flex">{{ Auth::user()->name }}</span>
+                    <div class="avatar placeholder flex md:hidden">
+                        <div class="bg-neutral-content text-base rounded-full w-8">
+                            <span class="text-xs">{{ Auth::user()->initials }}</span>
+                        </div>
+                    </div>
                     <svg width="12px" height="12px" class="ml-1 hidden h-3 w-3 fill-current opacity-60 sm:inline-block" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2048 2048">
                         <path d="M1799 349l242 241-1017 1017L7 590l242-241 775 775 775-775z"></path>
                     </svg>

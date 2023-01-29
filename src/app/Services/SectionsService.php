@@ -17,7 +17,7 @@ class SectionsService
      */
     public function getSimpleList(int $userId): array
     {
-        return Section::select(['title', 'slug', 'is_default'])
+        return Section::select(['id', 'title', 'slug', 'is_default'])
             ->whereUserId($userId)
             ->orderBy('order_by')
             ->cacheFor(

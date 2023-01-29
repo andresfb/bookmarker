@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -58,6 +59,21 @@ class User extends Authenticatable
     protected $appends = [
         'profile_photo_url',
     ];
+
+    /**
+     * getInitialsAttribute Method.
+     *
+     * @return string
+     */
+    public function getInitialsAttribute(): string
+    {
+        $name_array = explode(' ',trim($this->name));
+
+        $firstWord = $name_array[0];
+        $lastWord = $name_array[count($name_array)-1];
+
+        return $firstWord[0].$lastWord[0];
+    }
 
     /**
      * sections Method.
