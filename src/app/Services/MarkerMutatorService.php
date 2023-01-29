@@ -4,6 +4,8 @@ namespace App\Services;
 
 use App\Models\Marker;
 use App\Traits\Domainable;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class MarkerMutatorService
 {
@@ -26,9 +28,20 @@ class MarkerMutatorService
             return;
         }
 
-        $htmlString = file_get_contents($marker->url);
+        $response = Http::get($marker->url);
 
-        if (! preg_match('/<title>(.+)<\/title>/', $htmlString, $matches) || ! isset($matches[1])) {
+        if ($response->failed()) {
+            Log::error(sprintf(
+                $marker->url,
+                "Can't get title for: %s. Server error: %s | Client error: %s",
+                $response->serverError(),
+                $response->clientError())
+            );
+
+            return;
+        }
+
+        if (!preg_match('/<title>(.+)<\/title>/', $response->body(), $matches) || ! isset($matches[1])) {
             return;
         }
 

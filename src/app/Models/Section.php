@@ -5,10 +5,13 @@ namespace App\Models;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Rennokki\QueryCache\Traits\QueryCacheable;
 
 class Section extends BookModel
 {
-    use Sluggable;
+    use Sluggable, QueryCacheable;
+
+    public int $cacheFor = 3600;
 
     /**
      * sluggable Method.
@@ -58,11 +61,14 @@ class Section extends BookModel
     /**
      * getDefault Method.
      *
+     * @param int $userId
      * @return Section
      */
-    public static function getDefault(): Section
+    public static function getDefault(int $userId): Section
     {
-        return self::whereIsDefault(true)->firstOrFail();
+        return self::whereUserId($userId)
+            ->whereIsDefault(true)
+            ->firstOrFail();
     }
 
     /**

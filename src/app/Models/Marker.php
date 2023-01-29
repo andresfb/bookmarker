@@ -62,7 +62,8 @@ class Marker extends BookModel
     public function scopeActive(Builder $query): Builder
     {
         return $query->where('status', MarkerStatus::ACTIVE)
-            ->orderBy('priority');
+            ->orderBy('priority')
+            ->latest();
     }
 
     /**
@@ -73,11 +74,23 @@ class Marker extends BookModel
      */
     public function scopeHidden(Builder $query): Builder
     {
-        if (! cache()->has(config('constants.marker_hidden_key'))) {
+        if (!cache()->has(config('constants.marker_hidden_key'))) {
             return $query;
         }
 
         return $query->where('status', MarkerStatus::HIDDEN)
             ->orderBy('priority');
+    }
+
+    /**
+     * scopeWithInfo Method.
+     *
+     * @param Builder $query
+     * @return Builder
+     */
+    public function scopeWithInfo(Builder $query): Builder
+    {
+        return $query->with('tags')
+            ->with('section');
     }
 }

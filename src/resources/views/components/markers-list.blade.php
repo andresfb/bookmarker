@@ -1,3 +1,0 @@
-<div>
-    @dump($markers)
-</div>

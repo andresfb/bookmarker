@@ -11,11 +11,6 @@ use Illuminate\Http\Request;
 
 class DashboardController extends Controller
 {
-    public function __construct(private readonly MarkerService $service)
-    {
-        parent::__construct();
-    }
-
     /**
      * index Method.
      *
@@ -25,14 +20,12 @@ class DashboardController extends Controller
     {
         $perPage = $this->getPerPageValue($request, 'dashboard.index');
 
-        $section = Section::getDefault();
+        $section = Section::getDefault(auth()->id());
 
         return view('dashboard.index')
             ->with($section->getBaseInfo())
-            ->with(
-                'markers',
-                $this->service->getActiveList(auth()->id(), $perPage)
-            );
+            ->with('perPage', $perPage)
+            ->with('section', 0);
     }
 
     /**
@@ -48,9 +41,7 @@ class DashboardController extends Controller
 
         return view('dashboard.view')
             ->with($section->getBaseInfo())
-            ->with(
-                'markers',
-                $this->service->getSectionedList(auth()->id(), $perPage, $section->id)
-            );
+            ->with('perPage', $perPage)
+            ->with('section', $section->id);
     }
 }

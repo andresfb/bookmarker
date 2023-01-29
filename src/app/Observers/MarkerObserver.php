@@ -5,6 +5,7 @@ namespace App\Observers;
 use App\Jobs\GetSiteTitleJob;
 use App\Models\Marker;
 use App\Models\Section;
+use App\Services\CacheRefreshService;
 use App\Services\MarkerMutatorService;
 
 class MarkerObserver
@@ -12,9 +13,13 @@ class MarkerObserver
     /**
      * Constructor
      *
-     * @param  MarkerMutatorService  $service
+     * @param MarkerMutatorService $service
+     * @param CacheRefreshService $cacheService
      */
-    public function __construct(private readonly MarkerMutatorService $service)
+    public function __construct(
+        private readonly MarkerMutatorService $service,
+        private readonly CacheRefreshService  $cacheService
+    )
     {
     }
 
@@ -26,10 +31,6 @@ class MarkerObserver
      */
     public function creating(Marker $marker): void
     {
-        if (empty($marker->section_id)) {
-            $marker->section_id = Section::getDefault()->id ?? 1;
-        }
-
         $this->service->setDomain($marker);
     }
 
@@ -41,7 +42,7 @@ class MarkerObserver
      */
     public function created(Marker $marker): void
     {
-        GetSiteTitleJob::dispatch($marker);
+        $this->service->getTitle($marker);
     }
 
     /**
@@ -52,6 +53,6 @@ class MarkerObserver
      */
     public function saved(Marker $marker): void
     {
-        // TODO add the job to clear the cache
+        $this->cacheService->refreshMarkers($marker->user_id);
     }
 }

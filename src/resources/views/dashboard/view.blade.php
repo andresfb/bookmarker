@@ -3,6 +3,6 @@
         {{ $sectionTitle }}
     </x-slot>
 
-    <x-markers-list :markers="$markers" />
+    <livewire:markers-list-component :markers="$markers" :perPage="$perPage" />
 
 </x-app-layout>

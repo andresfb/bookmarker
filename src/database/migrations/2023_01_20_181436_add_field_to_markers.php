@@ -10,7 +10,6 @@ return new class extends Migration
     {
         Schema::table('markers', function (Blueprint $table) {
             $table->foreignId('section_id')
-                ->nullable()
                 ->after('user_id')
                 ->constrained();
         });

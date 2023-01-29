@@ -24,11 +24,11 @@ return [
 
         'ttl' => [
 
-            'service_minutes' => env('SERVICES_CACHE_TTL_MINUTES', 30),
+            'service_minutes' => env('SERVICES_CACHE_TTL_MINUTES', 15),
 
-            'view_models_minutes' => env('VIEW_MODELS_CACHE_TTL_MINUTES', 15),
+            'view_models_minutes' => env('VIEW_MODELS_CACHE_TTL_MINUTES', 10),
 
-            'short_lived_minutes' => env('SHORT_LIVED_CACHE_TTL_MINUTES', 10),
+            'short_lived_minutes' => env('SHORT_LIVED_CACHE_TTL_MINUTES', 5),
 
         ],
 
