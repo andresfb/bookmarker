@@ -53,7 +53,7 @@ class MarkerMutatorService
         }
 
         $match = $matches[3] ?? $matches[2] ?? $matches[1];
-        $title = ucwords(strtolower(trim(strip_tags($match))));
+        $title = trim(strip_tags($match));
         if (strlen($title) >= 100) {
             $title = substr($title, 0, 100) . "...";
         }

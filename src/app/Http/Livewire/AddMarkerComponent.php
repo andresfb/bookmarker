@@ -45,7 +45,7 @@ class AddMarkerComponent extends Component
         }
 
         $this->reset();
-        $this->emit('urlAdded');
+        $this->emit('markerSaved');
     }
 
     /**

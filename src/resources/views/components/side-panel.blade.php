@@ -65,6 +65,7 @@
                 <span>Sections</span>
             </li>
 
+        <!-- TODO: add the total number markers to each section -->
         @foreach($sections as $section)
             <li>
                 <a href="{{ route('dashboard.view', $section['slug']) }}" id="{{ $section['slug'] }}" class="flex gap-4">

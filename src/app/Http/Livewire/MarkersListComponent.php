@@ -17,7 +17,7 @@ class MarkersListComponent extends Component
     public int $section = 0;
 
     protected $listeners = [
-        'urlAdded' => 'render',
+        'markerSaved' => 'render',
         'echo:markers,MarkerTitleUpdatedEvent' => 'render',
     ];
 
