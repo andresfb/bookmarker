@@ -8,9 +8,9 @@ return [
 
         'default' => [
 
-            'per_page_options' => [10, 50, 100],
+            'per_page_options' => [20, 40, 80],
 
-            'per_page_default' => 50,
+            'per_page_default' => 20,
 
         ],
 
@@ -33,4 +33,6 @@ return [
         ],
 
     ],
+
+    'admin_user' => env('ADMIN_USER_EMAIL')
 ];

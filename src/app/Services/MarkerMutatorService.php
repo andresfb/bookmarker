@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Events\MarkerTitleUpdatedEvent;
 use App\Models\Marker;
 use App\Traits\Domainable;
 use Illuminate\Support\Facades\Http;
@@ -11,6 +12,12 @@ class MarkerMutatorService
 {
     use Domainable;
 
+    /**
+     * setDomain Method.
+     *
+     * @param Marker $marker
+     * @return void
+     */
     public function setDomain(Marker $marker): void
     {
         $marker->domain = $this->getDomain($marker->url);
@@ -45,7 +52,14 @@ class MarkerMutatorService
             return;
         }
 
-        $marker->title = ucwords(strtolower(trim($matches[1])));
+        $title = ucwords(strtolower(trim(strip_tags($matches[1]))));
+        if (strlen($title) >= 100) {
+            $title = substr($title, 0, 100) . "...";
+        }
+
+        $marker->title = $title;
         $marker->save();
+
+        event(new MarkerTitleUpdatedEvent);
     }
 }

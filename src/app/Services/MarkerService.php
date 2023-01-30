@@ -15,7 +15,7 @@ class MarkerService
     use CacheRefreshable;
 
     private int $perPage = 0;
-    private bool $formated = false;
+    private bool $formatted = false;
     private ?Builder $markers;
 
 
@@ -28,6 +28,9 @@ class MarkerService
      */
     public function load(int $userId, int $section = 0): static
     {
+        // TODO: change the service to allow setting the userid and section via functions.
+        // TODO: add a new function to allow filtering by tag
+
         if ($section === 0) {
             return $this->loadActive($userId);
         }
@@ -96,7 +99,7 @@ class MarkerService
      */
     public function format(): static
     {
-        $this->formated = true;
+        $this->formatted = true;
         return $this;
     }
 
@@ -107,6 +110,8 @@ class MarkerService
      */
     public function get(): Collection|LengthAwarePaginator
     {
+        // TODO: throw an exception of the's no userid
+
         if ($this->markers === null) {
             throw new RuntimeException("No Markers loaded");
         }
@@ -117,7 +122,7 @@ class MarkerService
             $markers = $this->markers->get();
         }
 
-        if ($this->formated) {
+        if ($this->formatted) {
             return $this->formatted($markers);
         }
 

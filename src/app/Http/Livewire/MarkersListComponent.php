@@ -8,6 +8,7 @@ use App\Services\MarkerService;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
+use Illuminate\Support\Facades\Log;
 use Livewire\Component;
 
 class MarkersListComponent extends Component
@@ -15,7 +16,10 @@ class MarkersListComponent extends Component
     public int $perPage = 0;
     public int $section = 0;
 
-    protected $listeners = ['urlAdded' => 'render'];
+    protected $listeners = [
+        'urlAdded' => 'render',
+        'echo:markers,MarkerTitleUpdatedEvent' => 'listening',
+    ];
 
     private MarkerService $service;
 
@@ -29,6 +33,12 @@ class MarkersListComponent extends Component
     public function boot(MarkerService $service): void
     {
         $this->service = $service;
+    }
+
+    public function listening(): void
+    {
+        Log::info('I heard you');
+        $this->render();
     }
 
     /**

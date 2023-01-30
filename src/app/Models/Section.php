@@ -84,6 +84,7 @@ class Section extends BookModel
                 'General',
                 'For Work',
                 'Movies',
+                'Programming',
                 'Writing',
                 'Photography',
                 'Research',

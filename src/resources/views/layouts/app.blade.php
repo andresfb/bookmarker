@@ -16,7 +16,7 @@
         <!-- Styles -->
         @livewireStyles
     </head>
-    <body class="antialiased bg-base-100">
+    <body class="antialiased bg-base-100 {{ !app()->isProduction() ? 'debug-screens' : '' }}">
 
         <div class="drawer drawer-mobile">
             <input id="drawer" type="checkbox" class="drawer-toggle" />
@@ -26,7 +26,7 @@
 
                 <div class="px-6 xl:pr-2 pb-16">
                     <div class="flex flex-col-reverse justify-between gap-6 xl:flex-row">
-                        <div class="prose w-full max-w-full flex-grow">
+                        <div class="w-full max-w-full flex-grow">
 
                             <!-- New Bookmark form -->
                             <livewire:add-marker-component />

@@ -42,7 +42,7 @@ class MarkerObserver
      */
     public function created(Marker $marker): void
     {
-        $this->service->getTitle($marker);
+        GetSiteTitleJob::dispatch($marker);
     }
 
     /**

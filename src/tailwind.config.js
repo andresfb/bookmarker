@@ -24,6 +24,7 @@ module.exports = {
     plugins: [
         require('@tailwindcss/forms'),
         require('@tailwindcss/typography'),
-        require("daisyui")
+        require("daisyui"),
+        require('tailwindcss-debug-screens')
     ],
 };
