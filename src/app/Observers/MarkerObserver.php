@@ -4,9 +4,8 @@ namespace App\Observers;
 
 use App\Jobs\GetSiteTitleJob;
 use App\Models\Marker;
-use App\Models\Section;
-use App\Services\CacheRefreshService;
 use App\Services\MarkerMutatorService;
+use Illuminate\Support\Facades\Cache;
 
 class MarkerObserver
 {
@@ -14,12 +13,8 @@ class MarkerObserver
      * Constructor
      *
      * @param MarkerMutatorService $service
-     * @param CacheRefreshService $cacheService
      */
-    public function __construct(
-        private readonly MarkerMutatorService $service,
-        private readonly CacheRefreshService  $cacheService
-    )
+    public function __construct(private readonly MarkerMutatorService $service)
     {
     }
 
@@ -53,6 +48,7 @@ class MarkerObserver
      */
     public function saved(Marker $marker): void
     {
-        $this->cacheService->refreshMarkers($marker->user_id);
+        $key = sprintf(config('constants.cache.refresh_key'), $marker->user_id);
+        Cache::put($key, 1, now()->addMinute());
     }
 }

@@ -18,7 +18,7 @@ class MarkersListComponent extends Component
 
     protected $listeners = [
         'urlAdded' => 'render',
-        'echo:markers,MarkerTitleUpdatedEvent' => 'listening',
+        'echo:markers,MarkerTitleUpdatedEvent' => 'render',
     ];
 
     private MarkerService $service;
@@ -33,12 +33,6 @@ class MarkersListComponent extends Component
     public function boot(MarkerService $service): void
     {
         $this->service = $service;
-    }
-
-    public function listening(): void
-    {
-        Log::info('I heard you');
-        $this->render();
     }
 
     /**
@@ -67,7 +61,8 @@ class MarkersListComponent extends Component
     public function render(): Factory|View|Application
     {
         return view('livewire.markers-list', [
-            'markers' => $this->service->load(auth()->id(), $this->section)
+            'markers' => $this->service->userId(auth()->id())
+                ->section($this->section)
                 ->paginated($this->perPage)
                 ->get()
         ]);

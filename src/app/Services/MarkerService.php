@@ -2,7 +2,6 @@
 
 namespace App\Services;
 
-use App\Enums\MarkerCachekeys;
 use App\Models\Marker;
 use App\Traits\CacheRefreshable;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
@@ -14,79 +13,22 @@ class MarkerService
 {
     use CacheRefreshable;
 
+    private int $userId = 0;
+    private int $sectionId = 0;
+    private int $tagId = 0;
     private int $perPage = 0;
+    private string $cacheKey = "";
     private bool $formatted = false;
     private ?Builder $markers;
 
 
     /**
-     * load Method.
-     *
-     * @param int $userId
-     * @param int $section
-     * @return $this
-     */
-    public function load(int $userId, int $section = 0): static
-    {
-        // TODO: change the service to allow setting the userid and section via functions.
-        // TODO: add a new function to allow filtering by tag
-
-        if ($section === 0) {
-            return $this->loadActive($userId);
-        }
-
-        return $this->loadSectioned($userId, $section);
-    }
-
-    /**
-     * loadActive Method.
-     *
-     * @param int $userId
-     * @return $this
-     */
-    public function loadActive(int $userId): static
-    {
-        $this->markers = Marker::active()
-            ->where('user_id', $userId)
-            ->withInfo()
-            ->cacheFor(
-                !$this->refreshCache()
-                    ? $this->serviceTtlMinutes()
-                    : null
-            )->cacheTags([MarkerCachekeys::active($userId)]);
-
-        return $this;
-    }
-
-    /**
-     * loadSectioned Method.
-     *
-     * @param int $userId
-     * @param int $sectionId
-     * @return $this
-     */
-    public function loadSectioned(int $userId, int $sectionId): static
-    {
-        $this->markers = Marker::active()
-            ->whereUserId($userId)
-            ->whereSectionId($sectionId)
-            ->withInfo()
-            ->cacheFor(
-                !$this->refreshCache()
-                    ? $this->serviceTtlMinutes()
-                    : null
-            )->cacheTags([MarkerCachekeys::sectioned($userId, $sectionId)]);
-
-        return $this;
-    }
-
-    /**
      * paginated Method.
      *
      * @param int $perPage
-     * @return $this
+     * @return MarkerService
      */
-    public function paginated(int $perPage): static
+    public function paginated(int $perPage): MarkerService
     {
         $this->perPage = $perPage;
         return $this;
@@ -95,11 +37,47 @@ class MarkerService
     /**
      * format Method.
      *
-     * @return $this
+     * @return MarkerService
      */
-    public function format(): static
+    public function format(): MarkerService
     {
         $this->formatted = true;
+        return $this;
+    }
+
+    /**
+     * userId Method.
+     *
+     * @param int $userId
+     * @return $this
+     */
+    public function userId(int $userId): MarkerService
+    {
+        $this->userId = $userId;
+        return $this;
+    }
+
+    /**
+     * section Method.
+     *
+     * @param int $section
+     * @return $this
+     */
+    public function section(int $section): MarkerService
+    {
+        $this->sectionId = $section;
+        return $this;
+    }
+
+    /**
+     * tag Method.
+     *
+     * @param int $tagId
+     * @return $this
+     */
+    public function tag(int $tagId): MarkerService
+    {
+        $this->tagId = $tagId;
         return $this;
     }
 
@@ -110,17 +88,15 @@ class MarkerService
      */
     public function get(): Collection|LengthAwarePaginator
     {
-        // TODO: throw an exception of the's no userid
-
-        if ($this->markers === null) {
-            throw new RuntimeException("No Markers loaded");
+        if (empty($this->userId)) {
+            throw new RuntimeException("Missing User Id");
         }
 
-        if ($this->perPage > 0) {
-            $markers = $this->markers->paginate($this->perPage);
-        } else {
-            $markers = $this->markers->get();
-        }
+        $this->loadBaseQuery();
+        $this->filterSection();
+        $this->filterTags();
+        $this->setCache();
+        $markers = $this->paginate();
 
         if ($this->formatted) {
             return $this->formatted($markers);
@@ -129,6 +105,68 @@ class MarkerService
         return $markers;
     }
 
+
+    /**
+     * loadBaseQuery Method.
+     *
+     * @return void
+     */
+    private function loadBaseQuery(): void
+    {
+        $this->markers = Marker::active()
+            ->whereUserId($this->userId)
+            ->withInfo();
+    }
+
+    /**
+     * filterSection Method.
+     *
+     * @return void
+     */
+    private function filterSection(): void
+    {
+        if (empty($this->sectionId)) {
+            return;
+        }
+
+        $this->markers->where('section_id', $this->sectionId);
+    }
+
+    /**
+     * filterTags Method.
+     *
+     * @return void
+     */
+    private function filterTags(): void
+    {
+
+    }
+
+    /**
+     * cacheQuery Method.
+     *
+     * @return void
+     */
+    private function setCache(): void
+    {
+        $this->markers->cacheFor(
+            !$this->refreshCache() ? $this->serviceTtlMinutes() : null
+        );
+    }
+
+    /**
+     * paginate Method.
+     *
+     * @return Collection|LengthAwarePaginator|array
+     */
+    private function paginate(): Collection|LengthAwarePaginator|array
+    {
+        if ($this->perPage > 0) {
+            return $this->markers->paginate($this->perPage);
+        }
+
+        return $this->markers->get();
+    }
 
     /**
      * formatted Method.

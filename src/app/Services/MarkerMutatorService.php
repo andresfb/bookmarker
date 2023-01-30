@@ -48,11 +48,12 @@ class MarkerMutatorService
             return;
         }
 
-        if (!preg_match('/<title>(.+)<\/title>/', $response->body(), $matches) || ! isset($matches[1])) {
+        if (!preg_match('/<title(>|\s.*>)(.+)<\/title>/', $response->body(), $matches) || !isset($matches[1])) {
             return;
         }
 
-        $title = ucwords(strtolower(trim(strip_tags($matches[1]))));
+        $match = $matches[3] ?? $matches[2] ?? $matches[1];
+        $title = ucwords(strtolower(trim(strip_tags($match))));
         if (strlen($title) >= 100) {
             $title = substr($title, 0, 100) . "...";
         }

@@ -22,6 +22,8 @@ return [
 
         'refresh_field' => 'refresh',
 
+        'refresh_key' => 'CACHE:REFRESH:KEY:%s',
+
         'ttl' => [
 
             'service_minutes' => env('SERVICES_CACHE_TTL_MINUTES', 15),
