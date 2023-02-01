@@ -29,7 +29,9 @@
                         <div class="w-full max-w-full flex-grow">
 
                             <!-- New Bookmark form -->
-                            <livewire:add-marker-component />
+                        @if(isset($newBookmark))
+                            {{ $newBookmark }}
+                        @endif
 
                             <!-- Page Heading -->
                         @if (isset($header))

@@ -13,7 +13,8 @@
                 <span>Main Menu</span>
             </li>
             <li>
-                <a href="{{ route('dashboard') }}" id="marks" class="flex gap-4 active">
+                <a class="flex gap-4 @if(request()->routeIs('dashboard')) active @endif"
+                    href="{{ route('dashboard') }}" id="marks">
                     <span class="flex-none">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
                           <path d="M11.644 1.59a.75.75 0 01.712 0l9.75 5.25a.75.75 0 010 1.32l-9.75 5.25a.75.75 0 01-.712 0l-9.75-5.25a.75.75 0 010-1.32l9.75-5.25z" />
@@ -68,7 +69,8 @@
         <!-- TODO: add the total number markers to each section -->
         @foreach($sections as $section)
             <li>
-                <a href="{{ route('dashboard.view', $section['slug']) }}" id="{{ $section['slug'] }}" class="flex gap-4">
+                <a class="flex gap-4 @if(request()->is($section['slug'])) active @endif"
+                    href="{{ route('dashboard.view', $section['slug']) }}" id="{{ $section['slug'] }}">
                     {{ $section['title'] }}
                 </a>
             </li>

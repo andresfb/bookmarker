@@ -3,6 +3,10 @@
         {{ $sectionTitle }}
     </x-slot>
 
-    <livewire:markers-list-component :markers="$markers" :perPage="$perPage" />
+    <x-slot name="newBookmark">
+        <livewire:add-marker-component />
+    </x-slot>
+
+    <livewire:markers-list-component :perPage="$perPage" :section="$section" />
 
 </x-app-layout>
