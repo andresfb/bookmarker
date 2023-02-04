@@ -93,4 +93,29 @@ class Marker extends BookModel
         return $query->with('tags')
             ->with('section');
     }
+
+    /**
+     * validationRules Method.
+     *
+     * @return string[]
+     */
+    public static function validationRules(string $modelName = ""): array
+    {
+        $rules = [
+            'section_id' => 'required|int|exits:sections',
+            'title' => 'required|string|min:2|max:255',
+            'notes' => 'nullable|string',
+        ];
+
+        if (empty($modelName)) {
+            return $rules;
+        }
+
+        $data = [];
+        foreach ($rules as $key => $rule) {
+            $data["$modelName.$key"] = $rule;
+        }
+
+        return $data;
+    }
 }

@@ -14,14 +14,7 @@ use Illuminate\Support\Facades\Session;
 abstract class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
-
-    protected SectionsService $sectionsService;
-
-    public function __construct()
-    {
-        $this->sectionsService = resolve(SectionsService::class);
-    }
-
+    
     /**
      * getPerPageValue Method.
      *

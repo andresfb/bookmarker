@@ -3,6 +3,7 @@
 namespace App\Http\Livewire;
 
 use App\Models\Marker;
+use App\Services\SectionsService;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
@@ -11,6 +12,7 @@ use LivewireUI\Modal\ModalComponent;
 
 class EditMarkerComponent extends ModalComponent
 {
+    public array $sections;
     public Marker $marker;
 
     /**
@@ -21,11 +23,13 @@ class EditMarkerComponent extends ModalComponent
      */
     public function mount(int $markerId): void
     {
-        $marker = Marker::findOrFail($markerId);
+        $sectionsService = resolve(SectionsService::class);
 
+        $marker = Marker::findOrFail($markerId);
         Gate::authorize('update', $marker);
 
         $this->marker = $marker;
+        $this->sections = $sectionsService->getSimpleList(auth()->id());
     }
 
     /**
@@ -38,15 +42,15 @@ class EditMarkerComponent extends ModalComponent
         return view('livewire.edit-marker');
     }
 
-    /**
-     * modalMaxWidth Method.
-     *
-     * @return string
-     */
-    public static function modalMaxWidth(): string
-    {
-        return 'xl';
-    }
+//    /**
+//     * modalMaxWidth Method.
+//     *
+//     * @return string
+//     */
+//    public static function modalMaxWidth(): string
+//    {
+//        return 'xl';
+//    }
 
     /**
      * closeModalOnEscape Method.
@@ -58,15 +62,15 @@ class EditMarkerComponent extends ModalComponent
         return false;
     }
 
-    /**
-     * closeModalOnClickAway Method.
-     *
-     * @return bool
-     */
-    public static function closeModalOnClickAway(): bool
-    {
-        return false;
-    }
+//    /**
+//     * closeModalOnClickAway Method.
+//     *
+//     * @return bool
+//     */
+//    public static function closeModalOnClickAway(): bool
+//    {
+//        return false;
+//    }
 
     /**
      * destroyOnClose Method.
@@ -76,5 +80,16 @@ class EditMarkerComponent extends ModalComponent
     public static function destroyOnClose(): bool
     {
         return true;
+    }
+
+
+    /**
+     * rules Method.
+     *
+     * @return array
+     */
+    protected function rules(): array
+    {
+        return Marker::validationRules('marker');
     }
 }
