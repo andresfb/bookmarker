@@ -59,8 +59,5 @@ class MarkerMutatorService
         }
 
         $marker->title = $title;
-        $marker->save();
-
-        event(new MarkerTitleUpdatedEvent);
     }
 }

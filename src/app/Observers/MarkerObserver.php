@@ -2,10 +2,11 @@
 
 namespace App\Observers;
 
-use App\Jobs\GetSiteTitleJob;
+use Exception;
 use App\Models\Marker;
 use App\Services\MarkerMutatorService;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Log;
 
 class MarkerObserver
 {
@@ -26,18 +27,12 @@ class MarkerObserver
      */
     public function creating(Marker $marker): void
     {
-        $this->service->setDomain($marker);
-    }
-
-    /**
-     * created Method.
-     *
-     * @param  Marker  $marker
-     * @return void
-     */
-    public function created(Marker $marker): void
-    {
-        GetSiteTitleJob::dispatch($marker);
+        try {
+            $this->service->setDomain($marker);
+            $this->service->getTitle($marker);
+        } catch (Exception $e) {
+            Log::error($e);
+        }
     }
 
     /**
