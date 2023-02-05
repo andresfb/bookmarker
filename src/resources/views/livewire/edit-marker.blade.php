@@ -52,7 +52,7 @@
                         <div class="p-2 w-full">
                             <div class="relative">
                                 <label for="section" class="leading-7 text-sm text-gray-600">Section</label>
-                                <select wire:model.defer="marker.section"
+                                <select wire:model.defer="marker.section_id"
                                     name="section"
                                     id="section"
                                     class="block p-2.5 w-full z-20
@@ -60,7 +60,9 @@
                                     focus:outline-none focus:ring-primary focus:border-primary
                                     border border-gray-300 outline-none">
                                 @foreach($sections as $section)
-                                    <option value="{{ $section['id'] }}">{{ $section['title'] }}</option>
+                                    <option value="{{ $section['id'] }}">
+                                        {{ $section['title'] }}
+                                    </option>
                                 @endforeach
                                 </select>
                                 @error('section') <span class="error">{{ $message }}</span> @enderror

@@ -13,6 +13,7 @@ use Livewire\Component;
 class AddMarkerComponent extends Component
 {
     public string $url = "";
+    public int $sectionId = 0;
 
     protected array $rules = [
         'url' => 'required|string|url|unique:markers,url'
@@ -30,11 +31,14 @@ class AddMarkerComponent extends Component
         }
 
         $values = $this->validate();
-
         $userId = auth()->id();
+        if (!$this->sectionId) {
+            $this->sectionId = Section::getDefault($userId)->id;
+        }
+
         $marker = Marker::create([
             'user_id' => $userId,
-            'section_id' => Section::getDefault($userId)->id,
+            'section_id' => $this->sectionId,
             'status' => MarkerStatus::ACTIVE,
             'url' => $values['url'],
         ]);

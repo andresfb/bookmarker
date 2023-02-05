@@ -11,6 +11,11 @@ class Section extends BookModel
 {
     use Sluggable, QueryCacheable;
 
+    protected $casts = [
+        'is_default' => 'boolean',
+        'order_by' => 'integer',
+    ];
+
     public int $cacheFor = 3600;
 
     /**
@@ -67,7 +72,7 @@ class Section extends BookModel
     public static function getDefault(int $userId): Section
     {
         return self::whereUserId($userId)
-            ->whereIsDefault(true)
+            ->whereIsDefault(1)
             ->firstOrFail();
     }
 

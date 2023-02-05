@@ -42,15 +42,15 @@ class EditMarkerComponent extends ModalComponent
         return view('livewire.edit-marker');
     }
 
-//    /**
-//     * modalMaxWidth Method.
-//     *
-//     * @return string
-//     */
-//    public static function modalMaxWidth(): string
-//    {
-//        return 'xl';
-//    }
+    /**
+     * modalMaxWidth Method.
+     *
+     * @return string
+     */
+    public static function modalMaxWidth(): string
+    {
+        return '2xl';
+    }
 
     /**
      * closeModalOnEscape Method.
