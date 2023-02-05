@@ -31,6 +31,7 @@ class AddMarkerComponent extends Component
         }
 
         $values = $this->validate();
+
         $userId = auth()->id();
         if (!$this->sectionId) {
             $this->sectionId = Section::getDefault($userId)->id;

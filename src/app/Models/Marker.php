@@ -102,9 +102,9 @@ class Marker extends BookModel
     public static function validationRules(string $modelName = ""): array
     {
         $rules = [
-            'section_id' => 'required|int|exits:sections',
-            'title' => 'required|string|min:2|max:255',
-            'notes' => 'nullable|string',
+            'section_id' => ['required', 'integer', 'exists:sections,id'],
+            'title' => ['required', 'string', 'min:2', 'max:255'],
+            'notes' => ['nullable', 'string'],
         ];
 
         if (empty($modelName)) {

@@ -43,43 +43,19 @@ class EditMarkerComponent extends ModalComponent
     }
 
     /**
-     * modalMaxWidth Method.
+     * save Method.
      *
-     * @return string
+     * @return void
      */
-    public static function modalMaxWidth(): string
+    public function save(): void
     {
-        return '2xl';
-    }
+        $this->validate();
 
-    /**
-     * closeModalOnEscape Method.
-     *
-     * @return bool
-     */
-    public static function closeModalOnEscape(): bool
-    {
-        return false;
-    }
+        $this->marker->save();
 
-//    /**
-//     * closeModalOnClickAway Method.
-//     *
-//     * @return bool
-//     */
-//    public static function closeModalOnClickAway(): bool
-//    {
-//        return false;
-//    }
+        $this->emit('markerSaved');
 
-    /**
-     * destroyOnClose Method.
-     *
-     * @return bool
-     */
-    public static function destroyOnClose(): bool
-    {
-        return true;
+        $this->closeModal();
     }
 
 

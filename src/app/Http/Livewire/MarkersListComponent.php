@@ -18,7 +18,6 @@ class MarkersListComponent extends Component
 
     protected $listeners = [
         'markerSaved' => 'render',
-        'echo:markers,MarkerTitleUpdatedEvent' => 'render',
     ];
 
     private MarkerService $service;
@@ -47,6 +46,24 @@ class MarkersListComponent extends Component
         $marker->status = MarkerStatus::ARCHIVED;
         if (!$marker->save()) {
             session()->flash("error", "Can't archive Marker");
+            return;
+        }
+
+        $this->render();
+    }
+
+    /**
+     * archive Method.
+     *
+     * @param int $markerId
+     * @return void
+     */
+    public function hide(int $markerId): void
+    {
+        $marker = Marker::find($markerId);
+        $marker->status = MarkerStatus::HIDDEN;
+        if (!$marker->save()) {
+            session()->flash("error", "Can't hide Marker");
             return;
         }
 

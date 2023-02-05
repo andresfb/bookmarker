@@ -13,4 +13,4 @@ tmux splitw -d ./vendor/bin/sail npm run dev
 tmux splitw -d ./vendor/bin/sail artisan horizon
 tmux select-layout tiled
 clear
-./vendor/bin/sail artisan websockets:serve
+#./vendor/bin/sail artisan websockets:serve
