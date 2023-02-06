@@ -10,11 +10,11 @@
         <!-- Fonts -->
         <link rel="stylesheet" href="https://fonts.bunny.net/css2?family=Nunito:wght@400;600;700&display=swap">
 
-        <!-- Scripts -->
-        @vite(['resources/css/app.css', 'resources/js/app.js'])
-
         <!-- Styles -->
+        <style>[x-cloak] { display: none !important; }</style>
+        @vite(['resources/css/app.css', 'resources/js/app.js'])
         @livewireStyles
+
     </head>
     <body class="antialiased bg-base-100 {{ !app()->isProduction() ? 'debug-screens' : '' }}">
 
@@ -58,6 +58,9 @@
 
         @stack('modals')
 
+        <!-- Scripts -->
         @livewireScripts
+        @stack('scripts')
+        @livewire('notifications')
     </body>
 </html>
