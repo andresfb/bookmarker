@@ -7,6 +7,7 @@ use App\Traits\Domainable;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use phpDocumentor\Reflection\Types\This;
 use Spatie\Tags\HasTags;
 
 class Marker extends BookModel
@@ -16,8 +17,8 @@ class Marker extends BookModel
 
     /** @var string[] */
     protected $casts = [
-        'status' => MarkerStatus::class,
         'priority' => 'integer',
+        'status' => MarkerStatus::class,
     ];
 
 
@@ -92,6 +93,30 @@ class Marker extends BookModel
     {
         return $query->with('tags')
             ->with('section');
+    }
+
+    /**
+     * getTagNamesList Method.
+     *
+     * @return array
+     */
+    public function getTagList(): array
+    {
+        if (empty($this->tags)) {
+            return [];
+        }
+
+        return $this->tags->pluck('name')->toArray();
+    }
+
+    /**
+     * getTagClassName Method.
+     *
+     * @return string
+     */
+    public static function getTagClassName(): string
+    {
+        return Tag::class;
     }
 
     /**

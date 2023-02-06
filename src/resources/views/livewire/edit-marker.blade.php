@@ -17,17 +17,10 @@
                                         id="url"
                                         type="text"
                                         value="{{ $marker->url }}"
-                                        class="block p-2.5 w-full z-20
-                                            text-sm bg-gray-100 bg-opacity-50 rounded-lg
-                                            border border-gray-300 outline-none"
-                                        disabled>
-                                    <button
-                                        type="button"
-                                        class="absolute top-0 right-0 p-2.5 text-sm font-medium text-white bg-gray-300 rounded-r-lg border border-gray-300 hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-300 dark:bg-gray-400 dark:hover:bg-gray-300 dark:focus:ring-gray-200">
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
-                                            <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 17.25v3.375c0 .621-.504 1.125-1.125 1.125h-9.75a1.125 1.125 0 01-1.125-1.125V7.875c0-.621.504-1.125 1.125-1.125H6.75a9.06 9.06 0 011.5.124m7.5 10.376h3.375c.621 0 1.125-.504 1.125-1.125V11.25c0-4.46-3.243-8.161-7.5-8.876a9.06 9.06 0 00-1.5-.124H9.375c-.621 0-1.125.504-1.125 1.125v3.5m7.5 10.375H9.375a1.125 1.125 0 01-1.125-1.125v-9.25m12 6.625v-1.875a3.375 3.375 0 00-3.375-3.375h-1.5a1.125 1.125 0 01-1.125-1.125v-1.5a3.375 3.375 0 00-3.375-3.375H9.75" />
-                                        </svg>
-                                    </button>
+                                        onClick="this.select();"
+                                        class="input input-bordered block p-2.5 w-full z-20
+                                            focus:outline-none focus:ring-primary focus:border-primary"
+                                        readonly>
                                 </div>
                             </div>
                         </div>
@@ -39,10 +32,9 @@
                                 <input wire:model.defer="marker.title"
                                     type="text"
                                     id="title"
-                                    class="block p-2.5 w-full z-20
-                                        text-sm bg-gray-100 bg-opacity-50 rounded-lg
-                                        focus:outline-none focus:ring-primary focus:border-primary
-                                        border border-gray-300 outline-none"
+                                    class="input input-bordered block p-2.5 w-full z-20
+                                        focus:outline-none focus:ring-primary focus:border-primary"
+                                    autofocus
                                     required>
                                 @error('title') <span class="error">{{ $message }}</span> @enderror
                             </div>
@@ -55,10 +47,8 @@
                                 <select wire:model.defer="marker.section_id"
                                     name="section"
                                     id="section"
-                                    class="block p-2.5 w-full z-20
-                                    text-sm bg-gray-100 bg-opacity-50 rounded-lg
-                                    focus:outline-none focus:ring-primary focus:border-primary
-                                    border border-gray-300 outline-none">
+                                    class="input input-bordered block p-2.5 w-full z-20
+                                        focus:outline-none focus:ring-primary focus:border-primary">
                                 @foreach($sections as $section)
                                     <option value="{{ $section['id'] }}">
                                         {{ $section['title'] }}
@@ -70,9 +60,9 @@
                         </div>
 
                         <!-- Tags -->
-                        <div class="p-2 w-full">
+                        <div class="p-2 mt-2 w-full">
                             <div class="relative">
-                                <h4>Tags</h4>
+                                {{ $this->form }}
                             </div>
                         </div>
 
@@ -83,10 +73,8 @@
                                 <textarea wire:model.defer="marker.notes"
                                     id="message"
                                     name="message"
-                                    class="block p-2.5 w-full z-20
-                                        text-sm bg-gray-100 bg-opacity-50 rounded-lg
+                                    class="input input-bordered block p-2.5 w-full z-20
                                         focus:outline-none focus:ring-primary focus:border-primary
-                                        border border-gray-300 outline-none
                                         h-32 py-1 px-3 resize-none"></textarea>
                             </div>
                         </div>

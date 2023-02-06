@@ -52,7 +52,7 @@
                             <div class="mt-6 space-x-3">
 
                                 <!-- Edit -->
-                                <button wire:click.prevent='$emit("openModal", "edit-marker-component", {{ json_encode(["markerId" => $marker['id']], JSON_THROW_ON_ERROR) }})'
+                                <button wire:click='$emit("openModal", "edit-marker-component", {{ json_encode(["markerId" => $marker['id']], JSON_THROW_ON_ERROR) }})'
                                         class="text-gray-500" type="button">
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="h-5 w-5">
                                         <path d="M5.433 13.917l1.262-3.155A4 4 0 017.58 9.42l6.92-6.918a2.121 2.121 0 013 3l-6.92 6.918c-.383.383-.84.685-1.343.886l-3.154 1.262a.5.5 0 01-.65-.65z"/>

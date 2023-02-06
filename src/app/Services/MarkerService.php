@@ -139,7 +139,7 @@ class MarkerService
      */
     private function filterTags(): void
     {
-
+        // TODO: filter by tag
     }
 
     /**

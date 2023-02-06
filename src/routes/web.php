@@ -24,3 +24,9 @@ Route::middleware([
         Route::get('/{section}', 'view')->name('dashboard.view');
     });
 });
+
+// TODO: add the routes controllers and views for Tags, Archive, and Hidden.
+// TODO: Add a Tag filter to the dashboard index and view methods.
+// TODO: Add tooltips to the buttons
+// TODO: Add notifications
+// TODO: Implement search
