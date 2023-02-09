@@ -1,7 +1,7 @@
 <x-app-layout>
 
     <x-listings-page
-        header="All Bookmarks"
+        :header="$sectionTitle"
         :tag="$tag"
         :section="$section"
         :archived="$archived"

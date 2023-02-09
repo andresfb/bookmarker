@@ -7,13 +7,13 @@ use App\Traits\Domainable;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use phpDocumentor\Reflection\Types\This;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Str;
 use Spatie\Tags\HasTags;
 
 class Marker extends BookModel
 {
-    use HasTags;
-    use Sluggable, Domainable;
+    use HasTags, Sluggable, Domainable;
 
     /** @var string[] */
     protected $casts = [
@@ -68,15 +68,31 @@ class Marker extends BookModel
     }
 
     /**
-     * scopeHidden Method.
+     * scoreArchived Method.
      *
-     * @param  Builder  $query
+     * @param Builder $query
      * @return Builder
      */
-    public function scopeHidden(Builder $query): Builder
+    public function scopeArchived(Builder $query): Builder
     {
-        if (!cache()->has(config('constants.marker_hidden_key'))) {
-            return $query;
+        return $query->where('status', MarkerStatus::ARCHIVED)
+            ->orderBy('priority')
+            ->latest();
+    }
+
+    /**
+     * scopeHidden Method.
+     *
+     * @param Builder $query
+     * @param int $userId
+     * @return Builder
+     */
+    public function scopeHidden(Builder $query, int $userId): Builder
+    {
+        $key = sprintf(config('constants.marker_hidden_key'), $userId);
+        $cachedUserId = (int) Cache::get($key, 0);
+        if ($cachedUserId !== $userId) {
+            return $query->where('status', Str::random(50));
         }
 
         return $query->where('status', MarkerStatus::HIDDEN)

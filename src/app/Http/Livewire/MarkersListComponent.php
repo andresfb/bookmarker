@@ -15,6 +15,9 @@ class MarkersListComponent extends Component
 {
     public int $perPage = 0;
     public int $section = 0;
+    public string $tag = "";
+    public bool $hidden = false;
+    public bool $archived = false;
 
     protected $listeners = [
         'markerSaved' => 'render',
@@ -80,6 +83,9 @@ class MarkersListComponent extends Component
         return view('livewire.markers-list', [
             'markers' => $this->service->userId(auth()->id())
                 ->section($this->section)
+                ->archived($this->archived)
+                ->hidden($this->hidden)
+                ->tag($this->tag)
                 ->paginated($this->perPage)
                 ->get()
         ]);

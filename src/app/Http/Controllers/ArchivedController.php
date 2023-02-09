@@ -9,26 +9,27 @@ use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\Request;
 
-class DashboardController extends Controller
+class ArchivedController extends Controller
 {
     use TagRequestable;
 
     /**
-     * index Method.
+     * __invoke Method.
      *
+     * @param Request $request
      * @return Application|Factory|View
      */
     public function __invoke(Request $request)
     {
         $tag = $this->getTagFromRequest($request);
-        $perPage = $this->getPerPageValue($request, 'dashboard');
+        $perPage = $this->getPerPageValue($request, 'archived');
         $section = Section::getDefault(auth()->id());
 
-        return view('dashboard.index')
+        return view('archived.index')
             ->with($section->getBaseInfo())
             ->with([
                 'section' => 0,
-                'archived'=> false,
+                'archived'=> true,
                 'hidden'  => false,
                 'tag'     => $tag,
                 'perPage' => $perPage,

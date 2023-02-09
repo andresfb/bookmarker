@@ -15,9 +15,11 @@ class MarkerService
 
     private int $userId = 0;
     private int $sectionId = 0;
-    private int $tagId = 0;
     private int $perPage = 0;
+    private string $tagSlug = "";
     private string $cacheKey = "";
+    private bool $hidden = false;
+    private bool $archived = false;
     private bool $formatted = false;
     private ?Builder $markers;
 
@@ -70,14 +72,36 @@ class MarkerService
     }
 
     /**
-     * tag Method.
+     * archived Method.
      *
-     * @param int $tagId
+     * @param bool $archived
      * @return $this
      */
-    public function tag(int $tagId): MarkerService
+    public function archived(bool $archived): MarkerService
     {
-        $this->tagId = $tagId;
+        $this->archived = $archived;
+        return $this;
+    }
+
+    /**
+     * @param bool $hidden
+     * @return MarkerService
+     */
+    public function hidden(bool $hidden): MarkerService
+    {
+        $this->hidden = $hidden;
+        return $this;
+    }
+
+    /**
+     * tag Method.
+     *
+     * @param string $tagSlug
+     * @return $this
+     */
+    public function tag(string $tagSlug): MarkerService
+    {
+        $this->tagSlug = $tagSlug;
         return $this;
     }
 
@@ -93,6 +117,8 @@ class MarkerService
         }
 
         $this->loadBaseQuery();
+        $this->setArchived();
+        $this->setHidden();
         $this->filterSection();
         $this->filterTags();
         $this->setCache();
@@ -113,9 +139,37 @@ class MarkerService
      */
     private function loadBaseQuery(): void
     {
-        $this->markers = Marker::active()
-            ->whereUserId($this->userId)
+        $this->markers = Marker::whereUserId($this->userId)
             ->withInfo();
+    }
+
+    /**
+     * setArchived Method.
+     *
+     * @return void
+     */
+    private function setArchived(): void
+    {
+        if ($this->archived) {
+            $this->markers->archived();
+            return;
+        }
+
+        $this->markers->active();
+    }
+
+    /**
+     * setHidden Method.
+     *
+     * @return void
+     */
+    private function setHidden(): void
+    {
+        if (!$this->hidden) {
+            return;
+        }
+
+        $this->markers->hidden($this->userId);
     }
 
     /**
@@ -139,7 +193,11 @@ class MarkerService
      */
     private function filterTags(): void
     {
-        // TODO: filter by tag
+        if (empty($this->tagSlug)) {
+            return;
+        }
+
+        $this->markers->withAnyTags([$this->tagSlug], $this->userId);
     }
 
     /**
@@ -185,4 +243,5 @@ class MarkerService
             return $data;
         });
     }
+
 }

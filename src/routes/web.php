@@ -1,6 +1,9 @@
 <?php
 
+use App\Http\Controllers\ArchivedController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\HiddenController;
+use App\Http\Controllers\SectionsController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -19,14 +22,22 @@ Route::middleware([
     config('jetstream.auth_session'),
     'cache.refresh',
 ])->group(function () {
-    Route::controller(DashboardController::class)->group(function () {
-        Route::get('/', 'index')->name('dashboard');
-        Route::get('/{section}', 'view')->name('dashboard.view');
+
+    Route::get('/', DashboardController::class)->name('dashboard');
+
+    Route::get('/section/{section}', SectionsController::class)->name('section');
+
+    Route::get('/archived', ArchivedController::class)->name('archived');
+
+    Route::controller(HiddenController::class)->group(function () {
+        Route::get('/hidden', 'index')->name('hidden');
+        Route::patch('/hidden', 'save')->name('hidden.access');
+        Route::delete('/hidden', 'destroy')->name('hidden.reset');
     });
+
 });
 
-// TODO: add the routes controllers and views for Tags, Archive, and Hidden.
-// TODO: Add a Tag filter to the dashboard index and view methods.
+// TODO: add the routes controllers and views for Tags.
 // TODO: Add tooltips to the buttons
 // TODO: Add notifications
 // TODO: Implement search

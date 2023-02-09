@@ -20,7 +20,7 @@
 
                             <div class="space-x-2 text-gray-500">
                             <span class="leading-relaxed">
-                                <a href="{{ route('dashboard.view', $marker['section']['slug']) }}" class="no-underline">
+                                <a href="{{ route('section', $marker['section']['slug']) }}" class="no-underline">
                                     {{ $marker['section']['title'] }}
                                 </a>
                             </span>
@@ -34,14 +34,14 @@
                             </div>
 
                             @if($marker['tags']->count())
-                                <div class="mt-4 flex flex-row flex-wrap gap-4">
-                                    @foreach($marker['tags'] as $tag)
-                                        <a href="#">
-                                            <div class="badge badge-accent">
-                                                {{ $tag['name'] }}
-                                            </div>
-                                        </a>
-                                    @endforeach
+                                <div class="mt-4 flex flex-row flex-wrap">
+                                @foreach($marker['tags'] as $tag)
+                                    <a href="?tag={{ $tag['slug'] }}" class="mr-2 lg:mr-4">
+                                        <div class="badge badge-accent">
+                                            {{ $tag['name'] }}
+                                        </div>
+                                    </a>
+                                @endforeach
                                 </div>
                             @endif
 

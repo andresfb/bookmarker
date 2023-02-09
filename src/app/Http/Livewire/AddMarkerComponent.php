@@ -12,8 +12,9 @@ use Livewire\Component;
 
 class AddMarkerComponent extends Component
 {
-    public string $url = "";
     public int $sectionId = 0;
+    public string $url = "";
+    public string $tag = "";
 
     protected array $rules = [
         'url' => 'required|string|url|unique:markers,url'
@@ -47,6 +48,10 @@ class AddMarkerComponent extends Component
         if ($marker === null) {
             session()->flash("error", "Can't add URL");
             return;
+        }
+
+        if (!empty($this->tag)) {
+            $marker->syncTagsWithType([$this->tag], $userId);
         }
 
         $this->reset();

@@ -45,7 +45,7 @@ return [
 
         'close_modal_on_escape' => false,
 
-        'close_modal_on_escape_is_forceful' => true,
+        'close_modal_on_escape_is_forceful' => false,
 
         'dispatch_close_event' => false,
 
