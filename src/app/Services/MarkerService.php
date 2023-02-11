@@ -217,7 +217,7 @@ class MarkerService
      *
      * @return Collection|LengthAwarePaginator|array
      */
-    private function paginate(): Collection|LengthAwarePaginator|array
+    private function paginate(): Collection|LengthAwarePaginator
     {
         if ($this->perPage > 0) {
             return $this->markers->paginate($this->perPage);
@@ -243,5 +243,4 @@ class MarkerService
             return $data;
         });
     }
-
 }

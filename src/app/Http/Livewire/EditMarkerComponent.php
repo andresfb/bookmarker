@@ -69,7 +69,7 @@ class EditMarkerComponent extends ModalComponent implements HasForms
         }, $this->tags);
 
         if (!empty($this->tags)) {
-            $this->marker->syncTagsWithType($tags, $this->marker->user_id);
+            $this->marker->syncTagsWithType($tags, (string) $this->marker->user_id);
         }
 
         $this->emit('markerSaved');
@@ -96,7 +96,7 @@ class EditMarkerComponent extends ModalComponent implements HasForms
     {
         return [
             SpatieTagsInput::make('tags')
-                ->type($this->marker->user_id)
+                ->type((string) $this->marker->user_id)
                 ->suggestions(
                     Tag::getUserTags($this->marker->user_id)
                 )
