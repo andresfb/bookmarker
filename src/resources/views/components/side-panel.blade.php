@@ -36,7 +36,8 @@
                 </a>
             </li>
             <li>
-                <a href="{{ route('archived') }}" id="archived" class="flex gap-4">
+                <a class="flex gap-4 @if(request()->routeIs('archived')) active @endif"
+                   href="{{ route('archived') }}" id="archived">
                     <span class="flex-none">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
                           <path d="M5.507 4.048A3 3 0 017.785 3h8.43a3 3 0 012.278 1.048l1.722 2.008A4.533 4.533 0 0019.5 6h-15c-.243 0-.482.02-.715.056l1.722-2.008z" />
@@ -47,7 +48,8 @@
                 </a>
             </li>
             <li>
-                <a href="{{ route('hidden') }}" id="hidden" class="flex gap-4">
+                <a class="flex gap-4 @if(request()->routeIs('hidden')) active @endif"
+                   href="{{ route('hidden') }}" id="hidden">
                     <span class="flex-none">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
                           <path d="M3.53 2.47a.75.75 0 00-1.06 1.06l18 18a.75.75 0 101.06-1.06l-18-18zM22.676 12.553a11.249 11.249 0 01-2.631 4.31l-3.099-3.099a5.25 5.25 0 00-6.71-6.71L7.759 4.577a11.217 11.217 0 014.242-.827c4.97 0 9.185 3.223 10.675 7.69.12.362.12.752 0 1.113z" />
