@@ -41,3 +41,8 @@ Route::middleware([
 // TODO: Add tooltips to the buttons
 // TODO: Add notifications
 // TODO: Implement search
+// TODO: Add hCaptcha after the first login fail
+// TODO: Test two-factor auth
+// TODO: Registration by invitation
+// TODO: Create a Command to send an invitation code
+// TODO: Larastan fixes
