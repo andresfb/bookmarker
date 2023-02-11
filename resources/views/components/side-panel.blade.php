@@ -71,7 +71,7 @@
         <!-- TODO: add the total number markers to each section -->
         @foreach($sections as $section)
             <li>
-                <a class="flex gap-4 @if(request()->is($section['slug'])) active @endif"
+                <a class="flex gap-4 @if(request()->is('section/'.$section['slug'])) active @endif"
                     href="{{ route('section', $section['slug']) }}" id="{{ $section['slug'] }}">
                     {{ $section['title'] }}
                 </a>

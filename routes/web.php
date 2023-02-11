@@ -46,3 +46,4 @@ Route::middleware([
 // TODO: Registration by invitation
 // TODO: Create a Command to send an invitation code
 // TODO: Larastan fixes
+// TODO: Remove cache-query package and use the standard Laravel Cache
