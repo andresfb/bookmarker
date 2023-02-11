@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Session;
 abstract class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
-    
+
     /**
      * getPerPageValue Method.
      *
@@ -34,7 +34,7 @@ abstract class Controller extends BaseController
             $perPage = (int) config("constants.pagination.$page.per_page_default");
         }
 
-        Cookie::make($key, $perPage, 5);
+        Cookie::make($key, (string) $perPage, 5);
         Session::put($key, $perPage);
         return $perPage;
     }
