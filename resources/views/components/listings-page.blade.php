@@ -1,7 +1,10 @@
 <div>
+
+@if (isset($header))
     <x-slot name="header">
         {{ $header }} @if ($tag !== null) - Tag: {{ ucwords($tag->name) }} @endif
     </x-slot>
+@endif
 
 @if($showAdd)
     <x-slot name="newBookmark">
@@ -14,6 +17,7 @@
         :section="$section"
         :archived="$archived"
         :hidden="$hidden"
+        :load-markers="$loadMarkers"
         :tag="$tag->slug ?? ''" />
 
 </div>

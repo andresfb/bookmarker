@@ -18,6 +18,7 @@ class MarkersListComponent extends Component
     public string $tag = "";
     public bool $hidden = false;
     public bool $archived = false;
+    public bool $loadMarkers = true;
 
     protected $listeners = [
         'markerSaved' => 'render',
@@ -80,14 +81,18 @@ class MarkersListComponent extends Component
      */
     public function render(): Factory|View|Application
     {
-        return view('livewire.markers-list', [
-            'markers' => $this->service->userId(auth()->id())
+        $markers = !$this->loadMarkers
+            ? collect()
+            : $this->service->userId(auth()->id())
                 ->section($this->section)
                 ->archived($this->archived)
                 ->hidden($this->hidden)
                 ->tag($this->tag)
                 ->paginated($this->perPage)
-                ->get()
+                ->get();
+
+        return view('livewire.markers-list', [
+            'markers' => $markers
         ]);
     }
 }

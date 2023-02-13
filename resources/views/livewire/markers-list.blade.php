@@ -88,12 +88,13 @@
         </div>
     </section>
 
-
+@if($markers->count())
     <section>
         <div class="p-4">
             {{ $markers->links() }}
         </div>
     </section>
+@endif
 
 </div>
 

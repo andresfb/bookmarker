@@ -7,6 +7,7 @@
         :archived="$archived"
         :hidden="$hidden"
         :perPage="$perPage"
+        :load-markers="true"
         :showAdd="false"
     />
 

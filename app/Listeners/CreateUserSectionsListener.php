@@ -4,10 +4,9 @@ namespace App\Listeners;
 
 use App\Models\Section;
 use Illuminate\Auth\Events\Registered;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Str;
 
-class CreateUserSectionsListener implements ShouldQueue
+class CreateUserSectionsListener
 {
     public function handle(Registered $event): void
     {

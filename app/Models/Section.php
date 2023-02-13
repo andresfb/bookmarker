@@ -72,8 +72,8 @@ class Section extends BookModel
     public static function getDefault(int $userId): Section
     {
         return self::whereUserId($userId)
-            ->whereIsDefault(1)
-            ->firstOrFail();
+            ->whereIsDefault(true)
+            ->first();
     }
 
     /**
