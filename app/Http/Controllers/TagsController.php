@@ -25,6 +25,12 @@ class TagsController extends Controller
         $tag = $this->getTagFromRequest($request);
         $perPage = $this->getPerPageValue($request, 'tags');
 
+        if (!empty($tag)) {
+            $tags = $service->getTag($tag->id);
+        } else {
+            $tags = $service->getUserList(auth()->id());
+        }
+
         return view('tags.index')
             ->with([
                 'section' => 0,
@@ -32,8 +38,8 @@ class TagsController extends Controller
                 'hidden'  => false,
                 'tag'     => $tag,
                 'perPage' => $perPage,
-                'tags'    => $service->getUserList(auth()->id()),
-                'loadMarkers' => false,
+                'tags'    => $tags,
+                'loadMarkers' => !empty($tag),
             ]);
     }
 }

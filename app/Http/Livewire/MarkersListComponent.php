@@ -13,6 +13,8 @@ use Livewire\Component;
 
 class MarkersListComponent extends Component
 {
+    public int $markerId = 0;
+
     public int $perPage = 0;
     public int $section = 0;
     public string $tag = "";
@@ -46,13 +48,28 @@ class MarkersListComponent extends Component
      */
     public function archive(int $markerId): void
     {
-        $marker = Marker::find($markerId);
+        $this->markerId = $markerId;
+    }
+
+    /**
+     * archiveId Method.
+     *
+     * @return void
+     */
+    public function archiveIt(): void
+    {
+        if (empty($this->markerId)) {
+            return;
+        }
+
+        $marker = Marker::find($this->markerId);
         $marker->status = MarkerStatus::ARCHIVED;
         if (!$marker->save()) {
             session()->flash("error", "Can't archive Marker");
             return;
         }
 
+        $this->markerId = 0;
         $this->render();
     }
 
@@ -64,13 +81,28 @@ class MarkersListComponent extends Component
      */
     public function hide(int $markerId): void
     {
-        $marker = Marker::find($markerId);
+        $this->markerId = $markerId;
+    }
+
+    /**
+     * hideId Method.
+     *
+     * @return void
+     */
+    public function hideIt(): void
+    {
+        if (empty($this->markerId)) {
+            return;
+        }
+
+        $marker = Marker::find($this->markerId);
         $marker->status = MarkerStatus::HIDDEN;
         if (!$marker->save()) {
             session()->flash("error", "Can't hide Marker");
             return;
         }
 
+        $this->markerId = 0;
         $this->render();
     }
 

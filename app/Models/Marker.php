@@ -95,8 +95,7 @@ class Marker extends BookModel
             return $query->where('status', Str::random(50));
         }
 
-        return $query->where('status', MarkerStatus::HIDDEN)
-            ->orderBy('priority');
+        return $query->where('status', MarkerStatus::HIDDEN);
     }
 
     /**

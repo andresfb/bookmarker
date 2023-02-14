@@ -119,6 +119,7 @@ class MarkerService
         $this->loadBaseQuery();
         $this->setArchived();
         $this->setHidden();
+        $this->setActive();
         $this->filterSection();
         $this->filterTags();
         $this->setCache();
@@ -150,12 +151,11 @@ class MarkerService
      */
     private function setArchived(): void
     {
-        if ($this->archived) {
-            $this->markers->archived();
+        if (!$this->archived) {
             return;
         }
 
-        $this->markers->active();
+        $this->markers->archived();
     }
 
     /**
@@ -170,6 +170,20 @@ class MarkerService
         }
 
         $this->markers->hidden($this->userId);
+    }
+
+    /**
+     * setActive Method.
+     *
+     * @return void
+     */
+    private function setActive(): void
+    {
+        if ($this->hidden || $this->archived) {
+            return;
+        }
+
+        $this->markers->active();
     }
 
     /**

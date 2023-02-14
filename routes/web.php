@@ -40,10 +40,11 @@ Route::middleware([
 
 });
 
-// TODO: add the routes controllers and views for Tags.
-// TODO: Add tooltips to the buttons
+// TODO: Remove cache-query package and use the standard Laravel Cache
+// TODO: Change the 'Archive' button to 'Restore' when the route is 'archive' and change the hidden button to 'Delete'
+// TODO: Change the 'Hide' button to 'Restore' when the route is 'hidden' and remove the archive button
 // TODO: Add notifications
 // TODO: Implement search
 // TODO: Test two-factor auth
+// TODO: Add a schedule to delete all 'soft-deleted' markers after 3 months
 // TODO: Larastan fixes
-// TODO: Remove cache-query package and use the standard Laravel Cache
