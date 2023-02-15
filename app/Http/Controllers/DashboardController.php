@@ -11,8 +11,6 @@ use Illuminate\Http\Request;
 
 class DashboardController extends Controller
 {
-    use TagRequestable;
-
     /**
      * index Method.
      *
@@ -20,9 +18,7 @@ class DashboardController extends Controller
      */
     public function __invoke(Request $request)
     {
-        $tag = $this->getTagFromRequest($request);
-        $perPage = $this->getPerPageValue($request, 'dashboard');
-        $section = Section::getDefault(auth()->id());
+        [$tag, $page, $perPage, $section] = $this->getBaseValues($request, auth()->id(), 'dashboard');
 
         return view('dashboard.index')
             ->with($section->getBaseInfo())
@@ -31,6 +27,7 @@ class DashboardController extends Controller
                 'archived'=> false,
                 'hidden'  => false,
                 'tag'     => $tag,
+                'page'    => $page,
                 'perPage' => $perPage,
             ]);
     }

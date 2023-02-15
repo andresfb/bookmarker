@@ -22,8 +22,7 @@ class TagsController extends Controller
      */
     public function __invoke(Request $request, TagsService $service)
     {
-        $tag = $this->getTagFromRequest($request);
-        $perPage = $this->getPerPageValue($request, 'tags');
+        [$tag, $page, $perPage, ] = $this->getBaseValues($request, userId: null, route: 'section');
 
         if (!empty($tag)) {
             $tags = $service->getTag($tag->id);
@@ -39,6 +38,7 @@ class TagsController extends Controller
                 'tag'     => $tag,
                 'perPage' => $perPage,
                 'tags'    => $tags,
+                'page'    => $page,
                 'loadMarkers' => !empty($tag),
             ]);
     }

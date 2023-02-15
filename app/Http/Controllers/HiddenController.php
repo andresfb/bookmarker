@@ -29,9 +29,7 @@ class HiddenController extends Controller
             return view('hidden.access');
         }
 
-        $tag = $this->getTagFromRequest($request);
-        $perPage = $this->getPerPageValue($request, 'hidden');
-        $section = Section::getDefault($userId);
+        [$tag, $page, $perPage, $section] = $this->getBaseValues($request, $userId, 'hidden');
 
         return view('hidden.index')
             ->with($section->getBaseInfo())
@@ -41,6 +39,7 @@ class HiddenController extends Controller
                 'hidden'  => true,
                 'tag'     => $tag,
                 'perPage' => $perPage,
+                'page'    => $page,
             ]);
     }
 

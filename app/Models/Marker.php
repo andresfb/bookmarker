@@ -21,6 +21,18 @@ class Marker extends BookModel
         'status' => MarkerStatus::class,
     ];
 
+    /**
+     * booted Method.
+     *
+     * @return void
+     */
+    protected static function booted(): void
+    {
+        static::saved(static function (Marker $marker) {
+            Cache::tags("markers:user_id:$marker->user_id")->flush();
+        });
+    }
+
 
     /**
      * sluggable Method.

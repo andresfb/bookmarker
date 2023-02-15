@@ -56,7 +56,8 @@ class TagsService
                 return $join->on('markers.id', '=', 'taggables.taggable_id')
                     ->where('taggables.taggable_type', Marker::class);
             })
-            ->where('markers.status', MarkerStatus::ACTIVE);
+            ->where('markers.status', MarkerStatus::ACTIVE)
+            ->groupBy('tags.id');
     }
 
     /**

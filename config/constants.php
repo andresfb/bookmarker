@@ -26,9 +26,9 @@ return [
 
         'ttl' => [
 
-            'service_minutes' => env('SERVICES_CACHE_TTL_MINUTES', 15),
+            'long_lived_minutes' => env('LONG_LIVED_CACHE_TTL_MINUTES', 30),
 
-            'view_models_minutes' => env('VIEW_MODELS_CACHE_TTL_MINUTES', 10),
+            'medium_lived_minutes' => env('MEDIUM_LIVED_CACHE_TTL_MINUTES', 15),
 
             'short_lived_minutes' => env('SHORT_LIVED_CACHE_TTL_MINUTES', 5),
 

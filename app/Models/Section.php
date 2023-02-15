@@ -5,18 +5,30 @@ namespace App\Models;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Rennokki\QueryCache\Traits\QueryCacheable;
+use Illuminate\Support\Facades\Cache;
 
 class Section extends BookModel
 {
-    use Sluggable, QueryCacheable;
+    use Sluggable;
 
+    /** @var string[] */
     protected $casts = [
         'is_default' => 'boolean',
         'order_by' => 'integer',
     ];
 
-    public int $cacheFor = 3600;
+    /**
+     * booted Method.
+     *
+     * @return void
+     */
+    protected static function booted(): void
+    {
+        static::saved(static function (Section $section) {
+            Cache::tags("sections:user_id:$section->user_id")->flush();
+        });
+    }
+
 
     /**
      * sluggable Method.

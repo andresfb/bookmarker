@@ -14,7 +14,7 @@ use Livewire\Component;
 class MarkersListComponent extends Component
 {
     public int $markerId = 0;
-
+    public int $page = 0;
     public int $perPage = 0;
     public int $section = 0;
     public string $tag = "";
@@ -121,6 +121,7 @@ class MarkersListComponent extends Component
                 ->hidden($this->hidden)
                 ->tag($this->tag)
                 ->paginated($this->perPage)
+                ->page($this->page)
                 ->get();
 
         return view('livewire.markers-list', [

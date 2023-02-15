@@ -10,19 +10,15 @@ trait TagRequestable
     /**
      * getTagFromRequest Method.
      *
-     * @param Request $request
+     * @param string $tag
      * @return mixed
      */
-    private function getTagFromRequest(Request $request): mixed
+    private function getTag(string $tag): mixed
     {
-        $value = $request->validate([
-            'tag' => ['nullable', 'string']
-        ]);
-
-        if (empty($value['tag'])) {
+        if (empty($tag)) {
             return null;
         }
 
-        return Tag::findFromString($value['tag'], auth()->id());
+        return Tag::findFromString($tag, auth()->id());
     }
 }

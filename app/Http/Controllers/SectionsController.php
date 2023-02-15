@@ -22,8 +22,7 @@ class SectionsController extends Controller
      */
     public function __invoke(Request $request, Section $section)
     {
-        $tag = $this->getTagFromRequest($request);
-        $perPage = $this->getPerPageValue($request, 'section');
+        [$tag, $page, $perPage, ] = $this->getBaseValues($request, userId: null, route: 'section');
 
         return view('section.index')
             ->with($section->getBaseInfo())
@@ -33,6 +32,7 @@ class SectionsController extends Controller
                 'hidden'  => false,
                 'tag'     => $tag,
                 'perPage' => $perPage,
+                'page'    => $page,
             ]);
     }
 }

@@ -38,6 +38,7 @@
         :section="$section"
         :archived="$archived"
         :hidden="$hidden"
+        :page="$page"
         :perPage="$perPage"
         :load-markers="$loadMarkers"
         :showAdd="false" />

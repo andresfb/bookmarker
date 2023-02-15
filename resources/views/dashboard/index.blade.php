@@ -6,6 +6,7 @@
         :section="$section"
         :archived="$archived"
         :hidden="$hidden"
+        :page="$page"
         :perPage="$perPage"
         :load-markers="true"
         :showAdd="true"

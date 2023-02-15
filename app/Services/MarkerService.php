@@ -7,17 +7,18 @@ use App\Traits\CacheRefreshable;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Cache;
 use RuntimeException;
 
 class MarkerService
 {
     use CacheRefreshable;
 
+    private int $page = 0;
     private int $userId = 0;
-    private int $sectionId = 0;
     private int $perPage = 0;
+    private int $sectionId = 0;
     private string $tagSlug = "";
-    private string $cacheKey = "";
     private bool $hidden = false;
     private bool $archived = false;
     private bool $formatted = false;
@@ -33,6 +34,16 @@ class MarkerService
     public function paginated(int $perPage): MarkerService
     {
         $this->perPage = $perPage;
+        return $this;
+    }
+
+    /**
+     * @param int $page
+     * @return MarkerService
+     */
+    public function page(int $page): MarkerService
+    {
+        $this->page = $page;
         return $this;
     }
 
@@ -122,8 +133,26 @@ class MarkerService
         $this->setActive();
         $this->filterSection();
         $this->filterTags();
-        $this->setCache();
-        $markers = $this->paginate();
+
+        $cacheKey = sprintf(
+            "markers:%s:%s:%s:%s:%s:%s:%s:%s",
+            $this->userId,
+            $this->sectionId,
+            $this->page,
+            $this->perPage,
+            $this->tagSlug,
+            $this->hidden,
+            $this->archived,
+            $this->formatted,
+        );
+
+        $markers = Cache::tags("markers:user_id:$this->userId")->remember(
+            md5($cacheKey),
+            !$this->refreshCache() ? $this->longLivedTtlMinutes() : null,
+            function () {
+                return $this->paginate();
+            }
+        );
 
         if ($this->formatted) {
             return $this->formatted($markers);
@@ -215,21 +244,9 @@ class MarkerService
     }
 
     /**
-     * cacheQuery Method.
-     *
-     * @return void
-     */
-    private function setCache(): void
-    {
-        $this->markers->cacheFor(
-            !$this->refreshCache() ? $this->serviceTtlMinutes() : null
-        );
-    }
-
-    /**
      * paginate Method.
      *
-     * @return Collection|LengthAwarePaginator|array
+     * @return Collection|LengthAwarePaginator
      */
     private function paginate(): Collection|LengthAwarePaginator
     {

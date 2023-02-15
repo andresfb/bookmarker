@@ -13,6 +13,7 @@
 @endif
 
     <livewire:markers-list-component
+        :page="$page"
         :perPage="$perPage"
         :section="$section"
         :archived="$archived"

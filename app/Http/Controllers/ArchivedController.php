@@ -21,9 +21,7 @@ class ArchivedController extends Controller
      */
     public function __invoke(Request $request)
     {
-        $tag = $this->getTagFromRequest($request);
-        $perPage = $this->getPerPageValue($request, 'archived');
-        $section = Section::getDefault(auth()->id());
+        [$tag, $page, $perPage, $section] = $this->getBaseValues($request, auth()->id(), 'archived');
 
         return view('archived.index')
             ->with($section->getBaseInfo())
@@ -33,6 +31,7 @@ class ArchivedController extends Controller
                 'hidden'  => false,
                 'tag'     => $tag,
                 'perPage' => $perPage,
+                'page'    => $page,
             ]);
     }
 }
