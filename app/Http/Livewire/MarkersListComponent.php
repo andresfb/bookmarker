@@ -14,6 +14,7 @@ use Livewire\Component;
 class MarkersListComponent extends Component
 {
     public int $markerId = 0;
+    public int $processMarkerId = 0;
     public int $page = 0;
     public int $perPage = 0;
     public int $section = 0;
@@ -48,7 +49,7 @@ class MarkersListComponent extends Component
      */
     public function archive(int $markerId): void
     {
-        $this->markerId = $markerId;
+        $this->processMarkerId = $markerId;
     }
 
     /**
@@ -58,18 +59,18 @@ class MarkersListComponent extends Component
      */
     public function archiveIt(): void
     {
-        if (empty($this->markerId)) {
+        if (empty($this->processMarkerId)) {
             return;
         }
 
-        $marker = Marker::find($this->markerId);
+        $marker = Marker::find($this->processMarkerId);
         $marker->status = MarkerStatus::ARCHIVED;
         if (!$marker->save()) {
             session()->flash("error", "Can't archive Marker");
             return;
         }
 
-        $this->markerId = 0;
+        $this->processMarkerId = 0;
         $this->render();
     }
 
@@ -81,7 +82,7 @@ class MarkersListComponent extends Component
      */
     public function hide(int $markerId): void
     {
-        $this->markerId = $markerId;
+        $this->processMarkerId = $markerId;
     }
 
     /**
@@ -91,18 +92,18 @@ class MarkersListComponent extends Component
      */
     public function hideIt(): void
     {
-        if (empty($this->markerId)) {
+        if (empty($this->processMarkerId)) {
             return;
         }
 
-        $marker = Marker::find($this->markerId);
+        $marker = Marker::find($this->processMarkerId);
         $marker->status = MarkerStatus::HIDDEN;
         if (!$marker->save()) {
             session()->flash("error", "Can't hide Marker");
             return;
         }
 
-        $this->markerId = 0;
+        $this->processMarkerId = 0;
         $this->render();
     }
 
@@ -116,16 +117,15 @@ class MarkersListComponent extends Component
         $markers = !$this->loadMarkers
             ? collect()
             : $this->service->userId(auth()->id())
-                ->section($this->section)
                 ->archived($this->archived)
                 ->hidden($this->hidden)
+                ->markerId($this->markerId)
+                ->section($this->section)
                 ->tag($this->tag)
                 ->paginated($this->perPage)
                 ->page($this->page)
                 ->get();
 
-        return view('livewire.markers-list', [
-            'markers' => $markers
-        ]);
+        return view('livewire.markers-list', ['markers' => $markers]);
     }
 }

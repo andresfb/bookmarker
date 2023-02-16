@@ -17,11 +17,11 @@ class MarkerService
     private int $page = 0;
     private int $userId = 0;
     private int $perPage = 0;
+    private int $markerId = 0;
     private int $sectionId = 0;
     private string $tagSlug = "";
     private bool $hidden = false;
     private bool $archived = false;
-    private bool $formatted = false;
     private ?Builder $markers;
 
 
@@ -48,17 +48,6 @@ class MarkerService
     }
 
     /**
-     * format Method.
-     *
-     * @return MarkerService
-     */
-    public function format(): MarkerService
-    {
-        $this->formatted = true;
-        return $this;
-    }
-
-    /**
      * userId Method.
      *
      * @param int $userId
@@ -67,6 +56,16 @@ class MarkerService
     public function userId(int $userId): MarkerService
     {
         $this->userId = $userId;
+        return $this;
+    }
+
+    /**
+     * @param int $markerId
+     * @return MarkerService
+     */
+    public function markerId(int $markerId): MarkerService
+    {
+        $this->markerId = $markerId;
         return $this;
     }
 
@@ -133,9 +132,10 @@ class MarkerService
         $this->setActive();
         $this->filterSection();
         $this->filterTags();
+        $this->filterMarker();
 
         $cacheKey = sprintf(
-            "markers:%s:%s:%s:%s:%s:%s:%s:%s",
+            "marker(s):%s:%s:%s:%s:%s:%s:%s:%s",
             $this->userId,
             $this->sectionId,
             $this->page,
@@ -143,22 +143,16 @@ class MarkerService
             $this->tagSlug,
             $this->hidden,
             $this->archived,
-            $this->formatted,
+            $this->markerId,
         );
 
-        $markers = Cache::tags("markers:user_id:$this->userId")->remember(
+        return Cache::tags("markers:user_id:$this->userId")->remember(
             md5($cacheKey),
             !$this->refreshCache() ? $this->longLivedTtlMinutes() : null,
             function () {
-                return $this->paginate();
+                return $this->markers->paginate($this->perPage);
             }
         );
-
-        if ($this->formatted) {
-            return $this->formatted($markers);
-        }
-
-        return $markers;
     }
 
 
@@ -244,34 +238,16 @@ class MarkerService
     }
 
     /**
-     * paginate Method.
+     * filterMarker Method.
      *
-     * @return Collection|LengthAwarePaginator
+     * @return void
      */
-    private function paginate(): Collection|LengthAwarePaginator
+    private function filterMarker(): void
     {
-        if ($this->perPage > 0) {
-            return $this->markers->paginate($this->perPage);
+        if (empty($this->markerId)) {
+            return;
         }
 
-        return $this->markers->get();
-    }
-
-    /**
-     * formatted Method.
-     *
-     * @param Collection|LengthAwarePaginator $markers
-     * @return Collection
-     */
-    private function formatted(Collection|LengthAwarePaginator $markers): Collection
-    {
-        return $markers->map(function (Marker $marker) {
-            $data = $marker->toArray();
-            $data['section'] = $marker->section->title;
-            $data['section_slug'] = $marker->section->slug;
-            $data['created'] = $marker->created_at->diffForHumans();
-
-            return $data;
-        });
+        $this->markers->where('id', $this->markerId);
     }
 }

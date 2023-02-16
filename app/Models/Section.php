@@ -3,18 +3,26 @@
 namespace App\Models;
 
 use Cviebrock\EloquentSluggable\Sluggable;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Cache;
 
-class Section extends BookModel
+class Section extends Model
 {
-    use Sluggable;
+    use Sluggable, SoftDeletes;
+
+    /** @var string[] */
+    protected $guarded = [];
 
     /** @var string[] */
     protected $casts = [
-        'is_default' => 'boolean',
-        'order_by' => 'integer',
+        'is_default'=> 'boolean',
+        'order_by'  => 'integer',
+        'deleted_at'=> 'datetime',
+        'created_at'=> 'datetime',
+        'updated_at'=> 'datetime',
     ];
 
     /**

@@ -2,15 +2,21 @@
 
 namespace App\Services;
 
-use App\Events\MarkerTitleUpdatedEvent;
 use App\Models\Marker;
 use App\Traits\Domainable;
+use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
 
 class MarkerMutatorService
 {
-    use Domainable;
+    use Domainable, WithFaker;
+
+    public function __construct()
+    {
+        $this->setUpFaker();
+    }
 
     /**
      * setDomain Method.
@@ -35,6 +41,7 @@ class MarkerMutatorService
             return;
         }
 
+        $fallBackSlug = Str::slug($this->faker->words($this->faker->numberBetween(4, 8), true));
         $response = Http::get($marker->url);
 
         if ($response->failed()) {
@@ -45,10 +52,12 @@ class MarkerMutatorService
                 $response->clientError())
             );
 
+            $marker->slug = $fallBackSlug;
             return;
         }
 
         if (!preg_match('/<title(>|\s.*>)(.+)<\/title>/', $response->body(), $matches) || !isset($matches[1])) {
+            $marker->slug = $fallBackSlug;
             return;
         }
 

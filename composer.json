@@ -10,15 +10,19 @@
         "filament/forms": "^2.0",
         "filament/spatie-laravel-tags-plugin": "^2.0",
         "guzzlehttp/guzzle": "^7.2",
+        "http-interop/http-factory-guzzle": "^1.2",
         "laravel/framework": "^9.19",
         "laravel/horizon": "^5.13",
         "laravel/jetstream": "^2.16",
         "laravel/sanctum": "^3.0",
+        "laravel/scout": "^9.8",
         "laravel/tinker": "^2.7",
         "livewire/livewire": "^2.11",
+        "meilisearch/meilisearch-php": "^1.0",
         "pusher/pusher-php-server": "^7.2",
         "spatie/laravel-tags": "^4.3",
-        "wire-elements/modal": "^1.0"
+        "wire-elements/modal": "^1.0",
+        "wire-elements/spotlight": "^1.0"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.7",
@@ -69,7 +73,8 @@
         "preferred-install": "dist",
         "sort-packages": true,
         "allow-plugins": {
-            "pestphp/pest-plugin": true
+            "pestphp/pest-plugin": true,
+            "php-http/discovery": true
         }
     },
     "minimum-stability": "stable",

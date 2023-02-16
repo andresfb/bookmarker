@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\Marker;
 use App\Models\Section;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Foundation\Support\Providers\RouteServiceProvider as ServiceProvider;
@@ -31,6 +32,13 @@ class RouteServiceProvider extends ServiceProvider
 
         Route::bind('section', function ($value) {
             return Section::where('slug', $value)
+                ->whereUserId(auth()->id())
+                ->firstOrFail();
+        });
+
+        Route::bind('marker', function ($value) {
+            return Marker::where('slug', $value)
+                ->with('section')
                 ->whereUserId(auth()->id())
                 ->firstOrFail();
         });

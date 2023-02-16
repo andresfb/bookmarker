@@ -6,19 +6,32 @@ use App\Enums\MarkerStatus;
 use App\Traits\Domainable;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
+use Laravel\Scout\Searchable;
 use Spatie\Tags\HasTags;
 
-class Marker extends BookModel
+class Marker extends Model
 {
-    use HasTags, Sluggable, Domainable;
+    use HasTags, Sluggable, SoftDeletes;
+    use Searchable, Domainable;
+
+    /** @var string[] */
+    protected $guarded = [];
 
     /** @var string[] */
     protected $casts = [
-        'priority' => 'integer',
-        'status' => MarkerStatus::class,
+        'id'        => 'integer',
+        'user_id'   => 'integer',
+        'section_id'=> 'integer',
+        'priority'  => 'integer',
+        'deleted_at'=> 'datetime',
+        'created_at'=> 'datetime',
+        'updated_at'=> 'datetime',
+        'status'    => MarkerStatus::class,
     ];
 
     /**
@@ -169,5 +182,48 @@ class Marker extends BookModel
         }
 
         return $data;
+    }
+
+    /**
+     * searchable Method.
+     *
+     * @return bool
+     */
+    public function searchable(): bool
+    {
+        return $this->status === MarkerStatus::ACTIVE;
+    }
+
+    /**
+     * searchableAs Method.
+     *
+     * @return string
+     */
+    public function searchableAs(): string
+    {
+        return 'bookmarker_markers_index';
+    }
+
+    /**
+     * toSearchableArray Method.
+     *
+     * @return array|null
+     */
+    public function toSearchableArray(): array|null
+    {
+        $this->tags;
+
+        return [
+            'id'        => $this->id,
+            'user_id'   => $this->user_id,
+            'url'       => $this->url,
+            'title'     => $this->title,
+            'domain'    => $this->domain,
+            'slug'      => $this->slug,
+            'notes'     => $this->notes,
+            'section'   => $this->section->title,
+            'tags'      => trim($this->tags?->pluck('name')->implode(', ')),
+            'created_at'=> $this->created_at,
+        ];
     }
 }

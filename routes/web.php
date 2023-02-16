@@ -3,6 +3,7 @@
 use App\Http\Controllers\ArchivedController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HiddenController;
+use App\Http\Controllers\MarkerController;
 use App\Http\Controllers\SectionsController;
 use App\Http\Controllers\TagsController;
 use Illuminate\Support\Facades\Route;
@@ -26,6 +27,8 @@ Route::middleware([
 
     Route::get('/', DashboardController::class)->name('dashboard');
 
+    Route::get('/marker/{marker}', MarkerController::class)->name('marker');
+
     Route::get('/section/{section}', SectionsController::class)->name('section');
 
     Route::get('/tags', TagsController::class)->name('tags');
@@ -43,7 +46,6 @@ Route::middleware([
 // TODO: Change the 'Archive' button to 'Restore' when the route is 'archive' and change the hidden button to 'Delete'
 // TODO: Change the 'Hide' button to 'Restore' when the route is 'hidden' and remove the archive button
 // TODO: Add notifications
-// TODO: Implement search
 // TODO: Test two-factor auth
 // TODO: Add a schedule to delete all 'soft-deleted' markers after 3 months
 // TODO: Add a schedule to send a notification to use with active markers order than 3 months

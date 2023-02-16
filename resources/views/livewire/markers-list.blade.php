@@ -93,7 +93,7 @@
         </div>
     </section>
 
-@if($markers->count())
+@if($markers->count() && $markers->hasPages())
     <section>
         <div class="p-4">
             {{ $markers->links() }}
