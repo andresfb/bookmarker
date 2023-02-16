@@ -3,7 +3,7 @@
 Similar to Pocket but self hosted and without the Ads.
 
 
-## Stack
+## Tech Stack
 
 ### Infrastructure
 1. PHP 8.1
