@@ -43,10 +43,12 @@ Route::middleware([
 
 });
 
-// TODO: Change the 'Archive' button to 'Restore' when the route is 'archive' and change the hidden button to 'Delete'
+// TODO: Allow URL creation from the Tags page
+// TODO: Send the 'current' tag to the Add Url component, so it's included when creating a new URL 
+// TODO: Change the 'Archive' button to 'Restore' when the route is 'archive' and change the hidden button to 'Delete.'
 // TODO: Change the 'Hide' button to 'Restore' when the route is 'hidden' and remove the archive button
 // TODO: Add notifications
 // TODO: Test two-factor auth
 // TODO: Add a schedule to delete all 'soft-deleted' markers after 3 months
-// TODO: Add a schedule to send a notification to use with active markers order than 3 months
+// TODO: Add a schedule to send a notification to use with active markers older than 3 months
 // TODO: Larastan fixes
