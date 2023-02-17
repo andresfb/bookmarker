@@ -20,7 +20,7 @@ class SectionsService
     {
         return Cache::tags("sections:user_id:$userId")->remember(
             md5("sections:user_id:$userId"),
-            !$this->refreshCache() ? $this->longLivedTtlMinutes() : null,
+            $this->longLivedTtlMinutes(),
             function () use ($userId) {
                 return Section::select(['id', 'title', 'slug', 'is_default'])
                     ->whereUserId($userId)

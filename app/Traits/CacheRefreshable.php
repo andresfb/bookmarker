@@ -30,7 +30,9 @@ trait CacheRefreshable
     }
 
     /**
-     * serviceTtlMinutes Method.
+     * longLivedTtlMinutes Method.
+     *
+     * Defaults to 30 minutes
      *
      * @param int $adjust
      * @return Carbon

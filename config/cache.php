@@ -79,6 +79,12 @@ return [
             'lock_connection' => 'default',
         ],
 
+        'refreshable' => [
+            'driver' => 'refresh',
+            'connection' => 'cache',
+            'lock_connection' => 'default',
+        ],
+
         'dynamodb' => [
             'driver' => 'dynamodb',
             'key' => env('AWS_ACCESS_KEY_ID'),

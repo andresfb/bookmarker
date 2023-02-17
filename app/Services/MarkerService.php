@@ -148,7 +148,7 @@ class MarkerService
 
         return Cache::tags("markers:user_id:$this->userId")->remember(
             md5($cacheKey),
-            !$this->refreshCache() ? $this->longLivedTtlMinutes() : null,
+            $this->longLivedTtlMinutes(),
             function () {
                 return $this->markers->paginate($this->perPage);
             }
