@@ -53,7 +53,7 @@ class RefreshableStore extends RedisStore
     public function add($key, $value, $seconds): bool
     {
         if ($this->refreshCache()) {
-            return false;
+            return parent::add($key, $value, 5);
         }
 
         return parent::add($key, $value, $seconds);
@@ -65,7 +65,7 @@ class RefreshableStore extends RedisStore
     public function put($key, $value, $seconds): bool
     {
         if ($this->refreshCache()) {
-            return false;
+            return parent::put($key, $value, 5);
         }
 
         return parent::put($key, $value, $seconds);
@@ -77,12 +77,11 @@ class RefreshableStore extends RedisStore
     public function putMany(array $values, $seconds): bool
     {
         if ($this->refreshCache()) {
-            return false;
+            return parent::putMany($values, 5);
         }
 
         return parent::putMany($values, $seconds);
     }
-
 
     /**
      * @inheritDoc
@@ -90,7 +89,7 @@ class RefreshableStore extends RedisStore
     public function forever($key, $value): bool
     {
         if ($this->refreshCache()) {
-            return false;
+            return parent::put($key, $value, 5);
         }
 
         return parent::forever($key, $value);
