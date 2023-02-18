@@ -43,8 +43,9 @@ Route::middleware([
 
 });
 
+// TODO: Change the Tag URL on the Markers list to go to: .../tags?tag=tailwinds
 // TODO: Allow URL creation from the Tags page
-// TODO: Send the 'current' tag to the Add Url component, so it's included when creating a new URL 
+// TODO: Send the 'current' tag to the Add Url component, so it's included when creating a new URL
 // TODO: Change the 'Archive' button to 'Restore' when the route is 'archive' and change the hidden button to 'Delete.'
 // TODO: Change the 'Hide' button to 'Restore' when the route is 'hidden' and remove the archive button
 // TODO: Add notifications

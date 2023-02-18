@@ -21,4 +21,7 @@ tests
 vendor
 node_modules
 bootstrap/cache
+public/build
+storage/framework/views
+storage/logs
 scripts
