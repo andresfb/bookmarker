@@ -2,6 +2,7 @@
 
 namespace App\Spotlight;
 
+use App\Enums\MarkerStatus;
 use App\Models\Marker;
 use Illuminate\Support\Collection;
 use LivewireUI\Spotlight\Spotlight;
@@ -10,7 +11,7 @@ use LivewireUI\Spotlight\SpotlightCommandDependencies;
 use LivewireUI\Spotlight\SpotlightCommandDependency;
 use LivewireUI\Spotlight\SpotlightSearchResult;
 
-class Markers extends SpotlightCommand
+class MarkersCommand extends SpotlightCommand
 {
     /**
      * This is the name of the command that will be shown in the Spotlight component.
@@ -58,8 +59,9 @@ class Markers extends SpotlightCommand
     {
         return Marker::search($query)
             ->where('user_id', auth()->id())
+            ->where('status', MarkerStatus::ACTIVE->value)
             ->get()
-            ->map(function(Marker $marker) {
+            ->map(function($marker) {
                 return new SpotlightSearchResult(
                     $marker->id,
                     $marker->title,

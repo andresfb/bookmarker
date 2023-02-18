@@ -134,7 +134,7 @@ return [
         'key' => env('MEILISEARCH_KEY'),
         'index-settings' => [
             \App\Models\Marker::class => [
-                'filterableAttributes'=> ['user_id', '__soft_deleted'],
+                'filterableAttributes'=> ['user_id', 'status', '__soft_deleted'],
                 'sortableAttributes'  => ['created_at', 'title', 'section'],
                 'stopWords'           => ['the', 'of', 'to'],
             ],

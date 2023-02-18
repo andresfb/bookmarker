@@ -1,7 +1,8 @@
 <?php
 
-use App\Spotlight\Markers;
-use App\Spotlight\Tags;
+use App\Spotlight\GotoCommand;
+use App\Spotlight\MarkersCommand;
+use App\Spotlight\TagsCommand;
 
 return [
 
@@ -32,8 +33,9 @@ return [
     */
 
     'commands' => [
-        Tags::class,
-        Markers::class,
+        TagsCommand::class,
+        MarkersCommand::class,
+        GotoCommand::class,
     ],
 
     /*

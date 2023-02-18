@@ -43,8 +43,8 @@ Route::middleware([
 
 });
 
-// TODO: Change the 'Archive' button to 'Restore' when the route is 'archive' and change the hidden button to 'Delete.'
-// TODO: Change the 'Hide' button to 'Restore' when the route is 'hidden' and remove the archive button
+// TODO: Add a command to go: home, tags, archived, hidden
+// TODO: add a SearchableRoutes table and create all basic route plus the sections
 // TODO: Add notifications
 // TODO: Add a schedule to delete all 'soft-deleted' markers after 3 months
 // TODO: Add a schedule to send a notification to use with active markers older than 3 months

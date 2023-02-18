@@ -26,13 +26,11 @@ class MarkerObserver
 
     public function saved(Marker $marker): void
     {
-        dump('saved');
         Cache::tags("markers:user_id:$marker->user_id")->flush();
     }
 
     public function deleted(Marker $marker): void
     {
-        dump('deleted');
-//        Cache::tags("markers:user_id:$marker->user_id")->flush();
+        Cache::tags("markers:user_id:$marker->user_id")->flush();
     }
 }

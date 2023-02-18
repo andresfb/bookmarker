@@ -28,8 +28,6 @@ class RefreshableStore extends RedisStore
      */
     public function get($key): mixed
     {
-        dump($this->refreshCache());
-
         if ($this->refreshCache()) {
             return null;
         }
@@ -55,7 +53,6 @@ class RefreshableStore extends RedisStore
     public function add($key, $value, $seconds): bool
     {
         if ($this->refreshCache()) {
-            dump('add', $key, 'forgoten');
             $this->forget($key);
             return false;
         }
@@ -69,8 +66,6 @@ class RefreshableStore extends RedisStore
     public function put($key, $value, $seconds): bool
     {
         if ($this->refreshCache()) {
-            dump('put', $key, 'forgoten');
-
             $this->forget($key);
             return false;
         }
@@ -84,7 +79,6 @@ class RefreshableStore extends RedisStore
     public function putMany(array $values, $seconds): bool
     {
         if ($this->refreshCache()) {
-            dump('putMany', $values, 'forgoten');
             foreach ($values as $value) {
                 $this->forget($value);
             }
@@ -101,8 +95,6 @@ class RefreshableStore extends RedisStore
     public function forever($key, $value): bool
     {
         if ($this->refreshCache()) {
-            dump('forever', $key, 'forgoten');
-
             $this->forget($key);
             return false;
         }

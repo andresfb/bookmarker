@@ -27,7 +27,7 @@ class Marker extends Model
     /** @var string[] */
     protected $guarded = [];
 
-    /** @var string[] */
+    /** @var array<string, string> */
     protected $casts = [
         'id'        => 'integer',
         'user_id'   => 'integer',
@@ -40,11 +40,6 @@ class Marker extends Model
     ];
 
 
-    /**
-     * sluggable Method.
-     *
-     * @return array[]
-     */
     public function sluggable(): array
     {
         return [
@@ -52,32 +47,16 @@ class Marker extends Model
         ];
     }
 
-    /**
-     * user Method.
-     *
-     * @return BelongsTo
-     */
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
-    /**
-     * section Method.
-     *
-     * @return BelongsTo
-     */
     public function section(): BelongsTo
     {
         return $this->belongsTo(Section::class);
     }
 
-    /**
-     * scopeActive Method.
-     *
-     * @param  Builder  $query
-     * @return Builder
-     */
     public function scopeActive(Builder $query): Builder
     {
         return $query->where('status', MarkerStatus::ACTIVE)
@@ -85,12 +64,6 @@ class Marker extends Model
             ->latest();
     }
 
-    /**
-     * scoreArchived Method.
-     *
-     * @param Builder $query
-     * @return Builder
-     */
     public function scopeArchived(Builder $query): Builder
     {
         return $query->where('status', MarkerStatus::ARCHIVED)
@@ -98,13 +71,6 @@ class Marker extends Model
             ->latest();
     }
 
-    /**
-     * scopeHidden Method.
-     *
-     * @param Builder $query
-     * @param int $userId
-     * @return Builder
-     */
     public function scopeHidden(Builder $query, int $userId): Builder
     {
         $key = sprintf(config('constants.marker_hidden_key'), $userId);
@@ -116,23 +82,12 @@ class Marker extends Model
         return $query->where('status', MarkerStatus::HIDDEN);
     }
 
-    /**
-     * scopeWithInfo Method.
-     *
-     * @param Builder $query
-     * @return Builder
-     */
     public function scopeWithInfo(Builder $query): Builder
     {
         return $query->with('tags')
             ->with('section');
     }
 
-    /**
-     * getTagNamesList Method.
-     *
-     * @return array
-     */
     public function getTagList(): array
     {
         if (empty($this->tags)) {
@@ -142,21 +97,11 @@ class Marker extends Model
         return $this->tags->pluck('name')->toArray();
     }
 
-    /**
-     * getTagClassName Method.
-     *
-     * @return string
-     */
     public static function getTagClassName(): string
     {
         return Tag::class;
     }
 
-    /**
-     * validationRules Method.
-     *
-     * @return string[]
-     */
     public static function validationRules(string $modelName = ""): array
     {
         $rules = [
@@ -177,31 +122,11 @@ class Marker extends Model
         return $data;
     }
 
-    /**
-     * searchable Method.
-     *
-     * @return bool
-     */
-    public function searchable(): bool
-    {
-        return $this->status === MarkerStatus::ACTIVE;
-    }
-
-    /**
-     * searchableAs Method.
-     *
-     * @return string
-     */
     public function searchableAs(): string
     {
         return 'bookmarker_markers_index';
     }
 
-    /**
-     * toSearchableArray Method.
-     *
-     * @return array|null
-     */
     public function toSearchableArray(): array|null
     {
         $this->tags;
@@ -209,13 +134,14 @@ class Marker extends Model
         return [
             'id'        => $this->id,
             'user_id'   => $this->user_id,
+            'status'    => $this->status->value,
             'url'       => $this->url,
             'title'     => $this->title,
             'domain'    => $this->domain,
             'slug'      => $this->slug,
             'notes'     => $this->notes,
             'section'   => $this->section->title,
-            'tags'      => trim($this->tags?->pluck('name')->implode(', ')),
+            'tags'      => trim($this->tags->pluck('name')->implode(', ')),
             'created_at'=> $this->created_at,
         ];
     }
