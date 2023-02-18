@@ -1,6 +1,6 @@
 #!/bin/sh
 
-SOURCE_PATH=./
+SOURCE_PATH=../
 EXCLUDE_FILE=exclude.txt
 DESTINATION_PATH=/data1/bookmarker
 
