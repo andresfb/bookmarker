@@ -10,21 +10,10 @@ use Illuminate\Support\Facades\Log;
 
 class MarkerObserver
 {
-    /**
-     * Constructor
-     *
-     * @param MarkerMutatorService $service
-     */
     public function __construct(private readonly MarkerMutatorService $service)
     {
     }
 
-    /**
-     * creating Method.
-     *
-     * @param  Marker  $marker
-     * @return void
-     */
     public function creating(Marker $marker): void
     {
         try {
@@ -35,15 +24,15 @@ class MarkerObserver
         }
     }
 
-    /**
-     * saved Method.
-     *
-     * @param Marker $marker
-     * @return void
-     */
     public function saved(Marker $marker): void
     {
-        $key = sprintf(config('constants.cache.refresh_key'), $marker->user_id);
-        Cache::put($key, 1, now()->addMinute());
+        dump('saved');
+        Cache::tags("markers:user_id:$marker->user_id")->flush();
+    }
+
+    public function deleted(Marker $marker): void
+    {
+        dump('deleted');
+//        Cache::tags("markers:user_id:$marker->user_id")->flush();
     }
 }

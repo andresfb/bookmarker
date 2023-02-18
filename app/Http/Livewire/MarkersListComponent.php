@@ -30,33 +30,16 @@ class MarkersListComponent extends Component
     private MarkerService $service;
 
 
-    /**
-     * boot Method.
-     *
-     * @param MarkerService $service
-     * @return void
-     */
     public function boot(MarkerService $service): void
     {
         $this->service = $service;
     }
 
-    /**
-     * archive Method.
-     *
-     * @param int $markerId
-     * @return void
-     */
     public function archive(int $markerId): void
     {
         $this->processMarkerId = $markerId;
     }
 
-    /**
-     * archiveId Method.
-     *
-     * @return void
-     */
     public function archiveIt(): void
     {
         if (empty($this->processMarkerId)) {
@@ -74,22 +57,54 @@ class MarkersListComponent extends Component
         $this->render();
     }
 
-    /**
-     * archive Method.
-     *
-     * @param int $markerId
-     * @return void
-     */
+    public function restore(int $markerId):void
+    {
+        $this->processMarkerId = $markerId;
+    }
+
+    public function restoreIt(): void
+    {
+        if (empty($this->processMarkerId)) {
+            return;
+        }
+
+        $marker = Marker::find($this->processMarkerId);
+        $marker->status = MarkerStatus::ACTIVE;
+        if (!$marker->save()) {
+            session()->flash("error", "Can't restore Marker");
+            return;
+        }
+
+        $this->processMarkerId = 0;
+        $this->render();
+    }
+
+    public function delete(int $markerId):void
+    {
+        $this->processMarkerId = $markerId;
+    }
+
+    public function deleteIt(): void
+    {
+        if (empty($this->processMarkerId)) {
+            return;
+        }
+
+        $marker = Marker::find($this->processMarkerId);
+        if (!$marker->delete()) {
+            session()->flash("error", "Can't delete Marker");
+            return;
+        }
+
+        $this->processMarkerId = 0;
+        $this->render();
+    }
+
     public function hide(int $markerId): void
     {
         $this->processMarkerId = $markerId;
     }
 
-    /**
-     * hideId Method.
-     *
-     * @return void
-     */
     public function hideIt(): void
     {
         if (empty($this->processMarkerId)) {
@@ -107,11 +122,6 @@ class MarkersListComponent extends Component
         $this->render();
     }
 
-    /**
-     * render Method.
-     *
-     * @return Factory|View|Application
-     */
     public function render(): Factory|View|Application
     {
         $markers = !$this->loadMarkers

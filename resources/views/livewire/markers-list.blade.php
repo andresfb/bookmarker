@@ -36,7 +36,7 @@
                             @if($marker['tags']->count())
                                 <div class="mt-4 flex flex-row flex-wrap">
                                 @foreach($marker['tags'] as $tag)
-                                    <a href="?tag={{ $tag['slug'] }}" class="mr-2 lg:mr-4">
+                                    <a href="{{ route('tags', ['tag' => $tag['slug']]) }}" class="mr-2 lg:mr-4">
                                         <div class="badge badge-accent">
                                             {{ $tag['name'] }}
                                         </div>
@@ -60,14 +60,47 @@
                                     </svg>
                                 </button>
 
+                            @if($archived)
+                                <!-- Restore -->
+                                <label for="restoreModal"
+                                       wire:click="restore({{ $marker['id'] }})"
+                                       data-tip="restore"
+                                       class="text-gray-500 tooltip tooltip-secondary hover:cursor-pointer">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                         stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 8.25H7.5a2.25 2.25 0 00-2.25 2.25v9a2.25 2.25 0 002.25 2.25h9a2.25 2.25 0 002.25-2.25v-9a2.25 2.25 0 00-2.25-2.25H15m0-3l-3-3m0 0l-3 3m3-3V15" />
+                                    </svg>
+                                </label>
+
+                                <!-- Delete -->
+                                <label for="deleteModal"
+                                       wire:click="delete({{ $marker['id'] }})"
+                                       data-tip="delete"
+                                       class="text-gray-500 tooltip tooltip-secondary tooltip-bottom hover:cursor-pointer">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                         stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
+                                    </svg>
+                                </label>
+                            @elseif($hidden)
+                                <!-- Restore -->
+                                <label for="restoreModal"
+                                       wire:click="restore({{ $marker['id'] }})"
+                                       data-tip="restore"
+                                       class="text-gray-500 tooltip tooltip-secondary hover:cursor-pointer">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                         stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 8.25H7.5a2.25 2.25 0 00-2.25 2.25v9a2.25 2.25 0 002.25 2.25h9a2.25 2.25 0 002.25-2.25v-9a2.25 2.25 0 00-2.25-2.25H15m0-3l-3-3m0 0l-3 3m3-3V15" />
+                                    </svg>
+                                </label>
+                            @else
                                 <!-- Archive -->
                                 <label for="archiveModal"
                                        wire:click="archive({{ $marker['id'] }})"
                                        data-tip="archive"
                                        class="text-gray-500 tooltip tooltip-secondary hover:cursor-pointer">
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                                         stroke="currentColor"
-                                         class="h-5 w-5">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                         stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                                         <path stroke-linecap="round" stroke-linejoin="round"
                                               d="M20.25 7.5l-.625 10.632a2.25 2.25 0 01-2.247 2.118H6.622a2.25 2.25 0 01-2.247-2.118L3.75 7.5m8.25 3v6.75m0 0l-3-3m3 3l3-3M3.375 7.5h17.25c.621 0 1.125-.504 1.125-1.125v-1.5c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v1.5c0 .621.504 1.125 1.125 1.125z"/>
                                     </svg>
@@ -75,13 +108,15 @@
 
                                 <!-- Hide -->
                                 <label for="hideModal"
-                                        wire:click="hide({{ $marker['id'] }})"
-                                        data-tip="hide"
-                                        class="text-gray-500 tooltip tooltip-secondary tooltip-right hover:cursor-pointer">
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                                       wire:click="hide({{ $marker['id'] }})"
+                                       data-tip="hide"
+                                       class="text-gray-500 tooltip tooltip-secondary tooltip-bottom hover:cursor-pointer">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                         stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M3.98 8.223A10.477 10.477 0 001.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.45 10.45 0 0112 4.5c4.756 0 8.773 3.162 10.065 7.498a10.523 10.523 0 01-4.293 5.774M6.228 6.228L3 3m3.228 3.228l3.65 3.65m7.894 7.894L21 21m-3.228-3.228l-3.65-3.65m0 0a3 3 0 10-4.243-4.243m4.242 4.242L9.88 9.88" />
                                     </svg>
                                 </label>
+                            @endif
 
                             </div>
                         </div>
@@ -110,6 +145,32 @@
                 <label for="archiveModal"
                    wire:click="archiveIt"
                    class="btn btn-sm btn-secondary hover:cursor-pointer">Yes</label>
+            </div>
+        </div>
+    </div>
+
+    <input type="checkbox" id="restoreModal" class="modal-toggle" />
+    <div class="modal modal-bottom sm:modal-middle">
+        <div class="modal-box">
+            <h3 class="font-bold text-lg">Restore Marker?</h3>
+            <div class="modal-action">
+                <label for="restoreModal" class="btn btn-sm btn-info">No</label>
+                <label for="restoreModal"
+                       wire:click="restoreIt"
+                       class="btn btn-sm btn-secondary hover:cursor-pointer">Yes</label>
+            </div>
+        </div>
+    </div>
+
+    <input type="checkbox" id="deleteModal" class="modal-toggle" />
+    <div class="modal modal-bottom sm:modal-middle">
+        <div class="modal-box">
+            <h3 class="font-bold text-lg">Delete Marker?</h3>
+            <div class="modal-action">
+                <label for="deleteModal" class="btn btn-sm btn-info">No</label>
+                <label for="deleteModal"
+                       wire:click="deleteIt"
+                       class="btn btn-sm btn-warning hover:cursor-pointer">Yes</label>
             </div>
         </div>
     </div>

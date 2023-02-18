@@ -1,19 +1,26 @@
 <x-app-layout>
 
-    <div class="mt-6 text-xl lg:text-2xl font-bold">
+    <x-slot name="newBookmark">
+        <livewire:add-marker-component :section-id="$section" :tag="$tag->slug ?? ''" />
+    </x-slot>
+
+    <x-slot name="header">
         Tags
     @if($loadMarkers)
-        <a href="{{ route('tags') }}" class="ml-2 text-primary-focus tooltip tooltip-secondary" data-tip="reload">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 inline-block">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M9 15L3 9m0 0l6-6M3 9h12a6 6 0 010 12h-3" />
-            </svg>
-        </a>
-    </div>
-@endif
+        <div class="text-xl lg:text-2xl font-bold inline-block">
+            <a href="{{ route('tags') }}" class="ml-2 text-primary-focus tooltip tooltip-secondary" data-tip="all tags">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 inline-block">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M9 15L3 9m0 0l6-6M3 9h12a6 6 0 010 12h-3" />
+                </svg>
+            </a>
+        </div>
+        @endif
+    </x-slot>
+
 
 @if(!empty($tags))
 
-    <section class="mb-10">
+    <section>
         <div class="container-fluid px-2 py-3 mx-auto">
             <div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-6 2xl:grid-cols-8 gap-5">
 

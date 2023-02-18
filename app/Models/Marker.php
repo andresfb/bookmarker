@@ -14,6 +14,11 @@ use Illuminate\Support\Str;
 use Laravel\Scout\Searchable;
 use Spatie\Tags\HasTags;
 
+/**
+ * Class Marker
+ *
+ * Being observed on App\Observers\MarkerObserver
+ */
 class Marker extends Model
 {
     use HasTags, Sluggable, SoftDeletes;
@@ -33,18 +38,6 @@ class Marker extends Model
         'updated_at'=> 'datetime',
         'status'    => MarkerStatus::class,
     ];
-
-    /**
-     * booted Method.
-     *
-     * @return void
-     */
-    protected static function booted(): void
-    {
-        static::saved(static function (Marker $marker) {
-            Cache::tags("markers:user_id:$marker->user_id")->flush();
-        });
-    }
 
 
     /**
