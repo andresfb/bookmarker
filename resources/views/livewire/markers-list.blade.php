@@ -1,11 +1,11 @@
 <div>
 
     <section class="overflow-hidden text-gray-600 body-font">
-        <div class="container mx-auto px-3 py-8">
+        <div class="container mx-auto px-2 py-8">
             <div class="-my-8 divide-y-2 divide-gray-100">
 
                 @foreach($markers as $marker)
-                    <div class="flex flex-wrap py-6 md:flex-nowrap">
+                    <div class="flex flex-wrap py-5 md:flex-nowrap">
 
                         <div class="mb-6 md:flex-grow">
                             <h2 class="mb-2 text-xl font-medium text-gray-900 title-font xl:text-2xl">

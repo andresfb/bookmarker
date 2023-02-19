@@ -2,7 +2,8 @@
 
 namespace App\Spotlight;
 
-use Illuminate\Support\Str;
+use App\Models\SearchableRoute;
+use Illuminate\Support\Collection;
 use LivewireUI\Spotlight\Spotlight;
 use LivewireUI\Spotlight\SpotlightCommand;
 use LivewireUI\Spotlight\SpotlightCommandDependencies;
@@ -44,37 +45,16 @@ class GotoCommand extends SpotlightCommand
      * Spotlight will resolve dependencies by calling the search method followed by your dependency name.
      * The method will receive the search query as the parameter.
      */
-    public function searchRoute($query)
+    public function searchRoute($query): Collection
     {
-        $routes = collect([
-            [
-                'id' => route('dashboard'),
-                'name' => Str::of('home'),
-                'description' => 'Go to home page'
-            ],
-            [
-                'id' => route('archived'),
-                'name' => Str::of('archived'),
-                'description' => 'Get the Archived list'
-            ],
-            [
-                'id' => route('hidden'),
-                'name' => Str::of('hidden'),
-                'description' => 'See the list of hidden markers'
-            ],
-            [
-                'id' => route('tags'),
-                'name' => Str::of('tags'),
-                'description' => 'Get all the tags'
-            ],
-        ])->sortBy('name');
-
-        return $routes->each(function ($route) {
-            return new SpotlightSearchResult(
-                $route['id'],
-                $route['name'],
-                $route['description'],
-            );
+        return SearchableRoute::where('name', 'like', "%$query%")
+            ->get()
+            ->map(function ($route) {
+                return new SpotlightSearchResult(
+                    $route->id,
+                    $route->name,
+                    $route->description,
+                );
         });
     }
 
@@ -82,13 +62,9 @@ class GotoCommand extends SpotlightCommand
      * When all dependencies have been resolved the execute method is called.
      * You can type-hint all resolved dependency you defined earlier.
      */
-    public function execute(Spotlight $spotlight, array $route): void
+    public function execute(Spotlight $spotlight, SearchableRoute $route): void
     {
-        if (empty($route)) {
-            return;
-        }
-
-        $spotlight->redirectRoute($route['id']);
+        $spotlight->redirect($route->route);
     }
 
     /**
