@@ -41,23 +41,19 @@ class MarkerMutatorService
             return;
         }
 
-        $fallBackSlug = Str::slug($this->faker->words($this->faker->numberBetween(4, 8), true));
         $response = Http::get($marker->url);
-
         if ($response->failed()) {
             Log::error(sprintf(
-                $marker->url,
                 "Can't get title for: %s. Server error: %s | Client error: %s",
+                $marker->url,
                 $response->serverError(),
                 $response->clientError())
             );
 
-            $marker->slug = $fallBackSlug;
             return;
         }
 
-        if (!preg_match('/<title(>|\s.*>)(.+)<\/title>/', $response->body(), $matches) || !isset($matches[1])) {
-            $marker->slug = $fallBackSlug;
+        if (!preg_match('/<title(>|\s.*>)(.+)<\/title>/', $response->body(), $matches) && !isset($matches[1])) {
             return;
         }
 
